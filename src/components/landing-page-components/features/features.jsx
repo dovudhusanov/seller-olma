@@ -4,7 +4,7 @@ import {FeaturesCardData} from "./data";
 
 function Features() {
     return (
-        <section className="features section">
+        <section className="features section" id={"advantages"}>
             <div className="container">
                 <div className="features-inner section-inner has-bottom-divider">
                     <div className="features-wrap">

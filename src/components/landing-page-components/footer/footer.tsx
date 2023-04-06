@@ -1,4 +1,8 @@
 import React from 'react';
+// @ts-ignore
+import logo from "../../../assets/logo.png"
+import {Typography} from "../../typography";
+import {Link} from "react-router-dom";
 
 function Footer() {
     return (
@@ -6,27 +10,28 @@ function Footer() {
             <div className="container">
                 <div className="site-footer-inner">
                     <div className="brand footer-brand">
-                        <a href="#">
-                            <img className="header-logo-image" src="dist/images/logo.svg" alt="Logo"/>
-                        </a>
+                        <Link to={"/"} style={{display: "flex", alignItems: "center"}}>
+                            <img className="header-logo-image mr-8" src={logo} alt="Logo" width={48}/>
+                            <Typography textWeight={"w_700"} style={{position: "relative", top: "5px"}} color={"lightText"} tag={"h4"} textSize={"h4"}>Olma Market</Typography>
+                        </Link>
                     </div>
                     <ul className="footer-links list-reset">
                         <li>
-                            <a href="#">Contact</a>
+                            <a href="src/components/landing-page-components/footer#">Contact</a>
                         </li>
                         <li>
-                            <a href="#">About us</a>
+                            <a href="src/components/landing-page-components/footer#">About us</a>
                         </li>
                         <li>
-                            <a href="#">FAQ's</a>
+                            <a href="src/components/landing-page-components/footer#">FAQ's</a>
                         </li>
                         <li>
-                            <a href="#">Support</a>
+                            <a href="src/components/landing-page-components/footer#">Support</a>
                         </li>
                     </ul>
                     <ul className="footer-social-links list-reset">
                         <li>
-                            <a href="#">
+                            <a href="src/components/landing-page-components/footer#">
                                 <span className="screen-reader-text">Facebook</span>
                                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -36,7 +41,7 @@ function Footer() {
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="src/components/landing-page-components/footer#">
                                 <span className="screen-reader-text">Twitter</span>
                                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -46,7 +51,7 @@ function Footer() {
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="src/components/landing-page-components/footer#">
                                 <span className="screen-reader-text">Google</span>
                                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -56,7 +61,7 @@ function Footer() {
                             </a>
                         </li>
                     </ul>
-                    <div className="footer-copyright">© 2019 Solid, all rights reserved</div>
+                    <Typography textWeight={"w_400"} textSize={"h6"} color={"lightText"} tag={"p"}>© 2019 Solid, all rights reserved</Typography>
                 </div>
             </div>
         </footer>

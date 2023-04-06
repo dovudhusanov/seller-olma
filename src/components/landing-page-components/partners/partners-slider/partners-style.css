@@ -1,0 +1,28 @@
+.partners-slider{
+    padding: 20px 0;
+    margin-bottom: 80px;
+}
+
+.slick-track{
+    display: flex!important;
+    justify-content: space-between!important;
+    align-items: center!important;
+}
+
+.partners-slider{
+    text-align: center!important;
+}
+
+.slick-slide img{
+    display: inline!important;
+}
+
+.partners-slider img{
+    width: 180px;
+}
+
+@media screen and (max-width: 425px) {
+    .partners-slider img{
+        width: 90px;
+    }
+}

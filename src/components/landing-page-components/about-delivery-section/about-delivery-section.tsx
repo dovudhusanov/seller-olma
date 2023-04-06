@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from "../button";
+import { Button , Typography } from '../..';
 
 function AboutDeliverySection() {
     return (
@@ -7,9 +7,9 @@ function AboutDeliverySection() {
             <div className="container-sm">
                 <div className="pricing-inner section-inner">
                     <div className="pricing-header text-center">
-                        <h2 className="section-title mt-0" style={{zIndex: 10, position: "relative"}}>Olma is a marketplace with guaranteed 1-day
+                        <Typography tag={"h2"} responsive={{md: "h4"}} textWeight={"w_700"} color={"lightText"} textSize={"h2"} style={{zIndex: 10, position: "relative"}}>Olma is a marketplace with guaranteed 1-day
                             delivery, around which thousands of sellers and manufacturers unite across the
-                            country</h2>
+                            country</Typography>
                     </div>
                     <div className="pricing-tables-wrap">
                         <div className="pricing-table">

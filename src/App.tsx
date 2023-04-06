@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+    AboutDeliverySection,
+    Cta,
+    Features,
+    Footer,
+    Navbar,
+    Partners,
+    Showcase
+} from "./components/landing-page-components";
+import Faq from "./components/landing-page-components/FAQ/faq";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="body-wrap">
+            <Navbar/>
+            <main>
+                <Showcase/>
+                <Features/>
+                <AboutDeliverySection/>
+                <Partners />
+                <Cta/>
+                <Faq />
+            </main>
+            <Footer/>
+        </div>
+    );
 }
 
 export default App;

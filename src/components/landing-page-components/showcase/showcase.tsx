@@ -1,6 +1,6 @@
 import React from 'react';
 import {ShowcaseRightImg} from "./showcase-right-img";
-import {Button} from "../button";
+import {Button, Typography} from "../..";
 
 function Showcase() {
     return (
@@ -8,10 +8,10 @@ function Showcase() {
             <div className="container">
                 <div className="hero-inner">
                     <div className="hero-copy">
-                        <h1 className="hero-title mt-0">Don't miss the opportunity</h1>
-                        <p className="hero-paragraph">Start building your business
+                        <Typography textSize={"h2"} textWeight={"w_700"} tag={"h2"} color={"lightText"}>Don't miss the opportunity</Typography>
+                        <Typography textSize={"h5"} className={"mb-24 mt-8"} textWeight={"w_400"} tag={"p"} color={"lightGray"}>Start building your business
                             at the fastest growing
-                            marketplace</p>
+                            marketplace</Typography>
                         <div className="hero-cta"><Button textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up</Button>
                             <Button textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
                         </div>
