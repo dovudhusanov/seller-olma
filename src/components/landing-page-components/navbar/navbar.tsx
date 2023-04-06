@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {Button} from "../../button";
 // @ts-ignore
 import logo from "../../../assets/logo.png"
 import {Typography} from "../../typography";
 
 function Navbar() {
+
+    const [isMobile, setIsMobile] = useState<boolean>(false)
+
+    window.addEventListener("click", () => {
+        setIsMobile(false)
+    })
+
     return (
-        <header className="site-header">
+        <header className={isMobile ? "site-header active" : "site-header"}>
             <div className="container">
                 <div className="site-header-inner">
                     <div className="brand header-brand">
@@ -15,15 +22,23 @@ function Navbar() {
                             <Typography textWeight={"w_700"} color={"lightText"} style={{position: "relative", top: "4px"}} tag={"h4"} textSize={"h4"}>Olma Market</Typography>
                         </a>
                     </div>
-                    <ul>
-                        <a href={"#advantages"}>Advantages</a>
-                        <a href={"#faq"}>FAQ</a>
-                        <a href={"#partners"}>Partners</a>
+                    <ul onClick={event => event.stopPropagation()}>
+                        <a href={"#advantages"} onClick={() => setIsMobile(false)}>Advantages</a>
+                        <a href={"#faq"} onClick={() => setIsMobile(false)}>FAQ</a>
+                        <a href={"#partners"} onClick={() => setIsMobile(false)}>Partners</a>
                         <div>
-                            <Button background={"primary"} hover={"primary"} textWeight={"w_600"}>Sign Up</Button>
-                            <Button textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
+                            <Button onClick={() => setIsMobile(false)} background={"primary"} hover={"primary"} textWeight={"w_600"}>Sign Up</Button>
+                            <Button onClick={() => setIsMobile(false)} textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
                         </div>
                     </ul>
+                    <div className={isMobile ? "burger active" : "burger"} onClick={(e: React.MouseEvent<any>) => {
+                        setIsMobile(prevState => !prevState)
+                        e.stopPropagation()
+                    }}>
+                        <div className="line"></div>
+                        <div className="line"></div>
+                        <div className="line"></div>
+                    </div>
                 </div>
             </div>
         </header>

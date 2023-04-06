@@ -7,7 +7,7 @@ function Partners() {
     return (
         <PartnersStyles id={"partners"}>
             <div className="container">
-                <Typography textSize={"h2"} textWeight={"w_700"} tag={"h2"} color={"lightText"}>Our Partners</Typography>
+                <Typography textSize={"h2"} responsive={{xs: "h3"}} textWeight={"w_700"} tag={"h2"} color={"lightText"}>Our Partners</Typography>
                 <PartnersSlider />
             </div>
         </PartnersStyles>

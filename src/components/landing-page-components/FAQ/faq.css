@@ -33,6 +33,12 @@
     user-select: none;
 }
 
+@media screen and (max-width: 425px) {
+    .faq-drawer__title{
+        font-size: 1rem;
+    }
+}
+
 .faq-drawer__title::after {
     border-style: solid;
     border-width: 1px 1px 0 0;

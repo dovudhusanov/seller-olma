@@ -21,8 +21,14 @@
     width: 180px;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 980px) {
     .partners-slider img{
-        width: 90px;
+        width: 120px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .partners-slider img{
+        width: 70px;
     }
 }
