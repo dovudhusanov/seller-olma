@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import {weight} from "../typography/typography.style";
 import React from "react";
 
@@ -48,8 +48,35 @@ export const ButtonMain = styled.button<ButtonMainProps>`
   height: 48px;
   text-align: center;
   white-space: nowrap;
+  position: relative;
 
   &:hover {
     ${(props) => hover[props.hover]};
   }
+
+  & > div{
+    padding: 16px 23px;
+  }
 `;
+
+
+const spin = keyframes`
+  100% {transform: rotate(360deg)}
+`
+
+export const Spinner = styled.div`
+  display: block;
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: 8px;
+  left: calc(50% - 17px);
+  background: transparent;
+  box-sizing: border-box;
+  border-top: 4px solid white;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-radius: 100%;
+  animation: ${spin} 0.6s ease-out infinite;
+`

@@ -1,4 +1,4 @@
-import {ButtonMain} from "./button.style";
+import {ButtonMain, Spinner} from "./button.style";
 import React from "react";
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
     readonly textWeight: "w_800" | "w_700" | "w_600" | "w_500" | "w_400";
@@ -7,9 +7,11 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
         "dark"
     readonly hover: | "primary" | "dark";
     readonly width?: string;
+    readonly type?: | "submit" | "button";
+    readonly loading?: boolean | any
     readonly children: React.ReactNode;
 }
 
-export const Button = ({children, ...props}: ButtonProps) => (
-    <ButtonMain {...props}>{children}</ButtonMain>
+export const Button = ({children, loading, ...props}: ButtonProps) => (
+    <ButtonMain {...props}> {loading ? <div><Spinner /></div> : children}</ButtonMain>
 );

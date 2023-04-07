@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button , Typography } from '../..';
+import {Link} from "react-router-dom";
 
 function AboutDeliverySection() {
     return (
@@ -26,7 +27,9 @@ function AboutDeliverySection() {
                                     </h4>
                                 </div>
                                 <div className="pricing-table-cta mb-8">
+                                <Link to={"/signup"}>
                                     <Button className={"button-block"} textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up now</Button>
+                                </Link>
                                 </div>
                             </div>
                         </div>

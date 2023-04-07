@@ -1,6 +1,7 @@
 import React from 'react';
 import {ShowcaseRightImg} from "./showcase-right-img";
 import {Button, Typography} from "../..";
+import {Link} from "react-router-dom";
 
 function Showcase() {
     return (
@@ -12,8 +13,11 @@ function Showcase() {
                         <Typography textSize={"h5"} className={"mb-24 mt-8"} textWeight={"w_400"} tag={"p"} color={"lightGray"}>Start building your business
                             at the fastest growing
                             marketplace</Typography>
-                        <div className="hero-cta"><Button textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up</Button>
-                            <Button textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
+                        <div className="hero-cta">
+                            <Link to={"/signup"}><Button textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up</Button></Link>
+                            <Link to={"login"}>
+                                <Button textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
+                            </Link>
                         </div>
                     </div>
                     <ShowcaseRightImg />

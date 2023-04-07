@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Typography} from "../..";
+import {Link} from "react-router-dom";
 
 function Cta() {
     return (
@@ -10,7 +11,9 @@ function Cta() {
                         take the lead
                         in your niche!</Typography>
                     <div className="cta-cta">
-                        <Button textWeight={"w_600"} background={"primary"} hover={"primary"} className={"button-wide-mobile"}>Sign up</Button>
+                        <Link to={"/signup"}>
+                            <Button textWeight={"w_600"} background={"primary"} hover={"primary"} className={"button-wide-mobile"}>Sign up</Button>
+                        </Link>
                     </div>
                 </div>
             </div>
