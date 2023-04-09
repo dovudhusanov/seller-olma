@@ -11,23 +11,23 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-       <Provider store={store}>
-           <BrowserRouter>
-               <App/>
-               <GlobalStyles/>
-               {/*<ToastContainer*/}
-               {/*    position="top-center"*/}
-               {/*    autoClose={5000}*/}
-               {/*    hideProgressBar={false}*/}
-               {/*    newestOnTop={false}*/}
-               {/*    closeOnClick*/}
-               {/*    rtl={false}*/}
-               {/*    pauseOnFocusLoss*/}
-               {/*    draggable*/}
-               {/*    pauseOnHover*/}
-               {/*    theme="colored"*/}
-               {/*/>*/}
-           </BrowserRouter>
-       </Provider>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App/>
+                <GlobalStyles/>
+                {/*<ToastContainer*/}
+                {/*    position="top-center"*/}
+                {/*    autoClose={5000}*/}
+                {/*    hideProgressBar={false}*/}
+                {/*    newestOnTop={false}*/}
+                {/*    closeOnClick*/}
+                {/*    rtl={false}*/}
+                {/*    pauseOnFocusLoss*/}
+                {/*    draggable*/}
+                {/*    pauseOnHover*/}
+                {/*    theme="colored"*/}
+                {/*/>*/}
+            </BrowserRouter>
+        </Provider>
     </React.StrictMode>
 );

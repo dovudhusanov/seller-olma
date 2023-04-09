@@ -14,8 +14,8 @@ function Showcase() {
                             at the fastest growing
                             marketplace</Typography>
                         <div className="hero-cta">
-                            <Link to={"/signup"}><Button textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up</Button></Link>
-                            <Link to={"login"}>
+                            <Link to={"/seller/signup"}><Button textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up</Button></Link>
+                            <Link to={"/seller/login"}>
                                 <Button textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
                             </Link>
                         </div>

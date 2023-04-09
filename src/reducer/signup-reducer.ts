@@ -5,7 +5,7 @@ const initialState = {
     signupError: null,
 };
 
-export function SignupReducer(state = initialState, action) {
+export function SignupReducer(state = initialState, action: any) {
     switch (action.type) {
         case SignupType.SIGNUP_START:
             return {

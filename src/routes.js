@@ -1,18 +1,22 @@
 import React from "react";
-import {useRoutes, Navigate} from "react-router-dom";
+import {Navigate, useRoutes} from "react-router-dom";
 import {
-    Home,
-    Landing, Signup, Login
+    PersonalInformation,
+    Landing, Signup, Login, About
 } from "./pages";
+import {BaseLayout} from "./layout/base-layout";
 
 export const Routes = () => {
     const token = localStorage.getItem("access");
     const isAuthorized = React.useMemo(() => Boolean(token), [token]);
     const PrivateRoute = [
         {
+            path: '/',
+            element: <BaseLayout/>,
             children: [
-                {path: "/", element: <Home/>},
-                // {path: "/user", element: <Navigate to={"/user/info"}/>},
+                {path: "/", element: <Navigate to={"/seller/personal-information"}/>},
+                {path: "/seller/personal-information", element: <PersonalInformation/>},
+                {path: "/about", element: <About/>},
                 // {path: "/profile", element: <Navigate to={"/user/info"}/>},
                 // {path: "/user/my-orders", element: <MyOrders/>},
                 // {path: "/user/info", element: <MyInfos/>},
@@ -33,8 +37,8 @@ export const Routes = () => {
         {
             children: [
                 {path: "/", element: <Landing/>},
-                {path: "/signup", element: <Signup/>},
-                {path: "/login", element: <Login/>},
+                {path: "/seller/signup", element: <Signup/>},
+                {path: "/seller/login", element: <Login/>},
                 // {path: "/verify-phone-number", element: <VerifyCode/>},
                 // {path: "/reset-password", element: <ResetPassword/>},
                 // {path: "/new-password", element: <NewPassword/>},

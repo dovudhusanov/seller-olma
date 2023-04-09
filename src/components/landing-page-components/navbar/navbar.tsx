@@ -28,10 +28,10 @@ function Navbar() {
                         <a href={"#partners"} onClick={() => setIsMobile(false)}>Partners</a>
                         <a href={"#faq"} onClick={() => setIsMobile(false)}>FAQ</a>
                         <div>
-                            <Link to={"/signup"}>
+                            <Link to={"/seller/signup"}>
                                 <Button onClick={() => setIsMobile(false)} background={"primary"} hover={"primary"} textWeight={"w_600"}>Sign Up</Button>
                             </Link>
-                            <Link to={"/login"}>
+                            <Link to={"/seller/login"}>
                                 <Button onClick={() => setIsMobile(false)} textWeight={"w_600"} background={"dark"} hover={"dark"}>Log In</Button>
                             </Link>
                         </div>

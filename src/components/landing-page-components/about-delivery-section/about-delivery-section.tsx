@@ -27,7 +27,7 @@ function AboutDeliverySection() {
                                     </h4>
                                 </div>
                                 <div className="pricing-table-cta mb-8">
-                                <Link to={"/signup"}>
+                                <Link to={"/seller/signup"}>
                                     <Button className={"button-block"} textWeight={"w_600"} background={"primary"} hover={"primary"}>Sign Up now</Button>
                                 </Link>
                                 </div>

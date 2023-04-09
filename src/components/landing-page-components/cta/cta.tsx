@@ -11,7 +11,7 @@ function Cta() {
                         take the lead
                         in your niche!</Typography>
                     <div className="cta-cta">
-                        <Link to={"/signup"}>
+                        <Link to={"/seller/signup"}>
                             <Button textWeight={"w_600"} background={"primary"} hover={"primary"} className={"button-wide-mobile"}>Sign up</Button>
                         </Link>
                     </div>

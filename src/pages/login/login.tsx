@@ -6,6 +6,7 @@ import "../signup/signup.css"
 import authImage from "../../assets/sign_.jpg"
 import {useDispatch} from "react-redux";
 import {LoginUser} from "../../action/auth-login-action";
+import {Alert} from "@mui/material";
 
 function Login() {
 
@@ -29,6 +30,7 @@ function Login() {
             await dispatch(LoginUser(form.phoneNumber, form.password));
             setIsLoading(false); // set isLoading back to false after dispatch is complete
         } catch (error) {
+            <Alert severity="error">This is an error alert — check it out!</Alert>
             setIsLoading(false); // set isLoading back to false in case of error
             console.error(error);
         }
@@ -69,7 +71,7 @@ function Login() {
                     </form>
                     <div className="auth__form-container_fields-account">
                         <p> Didn't have an account?
-                            <Link to={"/signup"}>
+                            <Link to={"/seller/signup"}>
                                 <span>Sign Up</span>
                             </Link>
                         </p>

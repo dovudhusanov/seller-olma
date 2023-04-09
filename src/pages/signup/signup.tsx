@@ -91,7 +91,7 @@ function Signup() {
                         </form>
                         <div className="auth__form-container_fields-account">
                             <p> Already have an account?
-                                <Link to={"/login"}>
+                                <Link to={"/seller/login"}>
                                     <span>Log In</span>
                                 </Link>
                             </p>
