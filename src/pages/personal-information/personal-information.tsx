@@ -1,10 +1,11 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as yup from 'yup';
 import {FormStyle, PersonalInformationStyles, Warning} from "./personal-information.styles";
 import {WarningIcon} from "../../icons";
 import {Button, Stack, TextField, Typography} from "@mui/material";
 import {EditSellerInfoApi} from "../../api/profile/edit-seller-info-api";
+import {GetSellerApi} from "../../api/profile/get-seller-api";
 
 const schema = yup.object().shape({
     firstName: yup.string().required('First name is required'),
@@ -34,6 +35,17 @@ interface PersonalInformationInterface {
 
 function PersonalInformation() {
 
+    async function GetSeller() {
+        await GetSellerApi(5)
+            .then((res: any) => {
+                console.log(res.data)
+            })
+    }
+
+    useEffect(() => {
+        GetSeller()
+    }, [])
+
     const [value, setValue] = useState<PersonalInformationInterface>({
         firstName: '',
         lastName: '',
@@ -59,7 +71,8 @@ function PersonalInformation() {
             inn,
             address,
             surname,
-            email
+            email,
+            images: [1]
         })
     }
 
@@ -171,7 +184,7 @@ function PersonalInformation() {
                                 required/>
 
                         </Stack>
-                        <Button variant={"contained"} type={"submit"}>Submit</Button>
+                        <Button sx={{marginTop: "10px"}} variant={"contained"} type={"submit"}>Save</Button>
                     </Form>
                 )}
             </Formik>

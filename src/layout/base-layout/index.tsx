@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./base-layout.css"
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {
@@ -19,7 +19,8 @@ const {Header, Sider, Content} = Layout;
 
 export function BaseLayout() {
 
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState<boolean>(false);
+    const [isMobileBtn, setIsMobileBtn] = useState<any>(false)
     const {
         token: {colorBgContainer},
     } = theme.useToken();
@@ -36,8 +37,22 @@ export function BaseLayout() {
         navigate("/");
     }
 
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                setCollapsed(false);
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [])
+
     return (
-        <BaseLayoutMainStyle>
+        <BaseLayoutMainStyle isMobileBtn={isMobileBtn}>
             <Layout>
                 <Sider trigger={null} collapsible collapsed={collapsed} className={collapsed ? "menu-r" : "menu-b"}>
                     <button className={collapsed ? "trigger trigger-none" : "trigger"}
@@ -45,30 +60,40 @@ export function BaseLayout() {
                         {collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>} <span
                         className="menu-text">Menu</span>
                     </button>
+                    <button className={"close-btn-menu"} onClick={() => setIsMobileBtn(false)}><MenuFoldOutlined/><span
+                        className="menu-text">Close</span>
+                    </button>
                     <Menu
                         theme="dark"
                         mode="inline"
                         defaultSelectedKeys={['1']}
                     >
-                        <Menu.Item className={"first-li"} key="1" icon={<UserOutlined/>}>
+                        <Menu.Item className={"first-li"} key="1" icon={<UserOutlined/>}
+                                   onClick={() => setIsMobileBtn(false)}>
                             <NavLink to="/seller/personal-information">Personal info</NavLink>
                         </Menu.Item>
-                        <Menu.Item className={"logout-btn"} key="4" icon={<LogoutOutlined/>} style={{marginTop: 'auto'}}>
+                        <Menu.Item className={"logout-btn"} key="4" icon={<LogoutOutlined/>}
+                                   onClick={() => setIsMobileBtn(false)} style={{marginTop: 'auto'}}>
                             <span onClick={handleLogout}>Log Out</span>
                         </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
                     <Header style={{padding: 0, background: colorBgContainer}}>
-                        <div className="logo-layout">
-                            <img src={logo} width={30} alt="logo" className="logo"/>
-                            <h2>Olma Market</h2>
+                        <div className={"mobile-logo"}>
+                            <button className={"open-menu-btn"} onClick={() => setIsMobileBtn(true)}>
+                                <MenuUnfoldOutlined/>
+                            </button>
+                            <div className="logo-layout">
+                                <img src={logo} width={30} alt="logo" className="logo"/>
+                                <h2>Olma Market</h2>
+                            </div>
                         </div>
                     </Header>
                     <Content
                         style={{
                             margin: '24px 16px',
-                            padding:  window.location.pathname === "/seller/personal-information" ? 0 : 24,
+                            padding: window.location.pathname === "/seller/personal-information" ? 0 : 24,
                             minHeight: 280,
                             background: window.location.pathname === "/seller/personal-information" ? "none" : colorBgContainer,
                             display: "flex",

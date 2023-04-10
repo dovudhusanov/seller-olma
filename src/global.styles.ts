@@ -31,35 +31,4 @@ export const GlobalStyles =  createGlobalStyle`
     max-width: 100%;
     vertical-align: middle
   }
-
-  .logo-layout {
-    display: flex;
-    align-items: center;
-    padding: 0 0 0 15px;
-  }
-
-  .logo-layout img {
-    margin-right: 6px;
-    position: relative;
-    top: -2px;
-  }
-
-  .logo-layout h2{
-    color: var(--primary-color);
-  }
-  
-  .ant-menu{
-    position: relative;
-    height: 100%;
-  }
-  
-  .first-li{
-    margin-top: 10px!important;
-  }
-
-  .ant-menu .logout-btn{
-    position: absolute!important;
-    bottom: 80px;
-    background-color: transparent!important;
-  }
 `

@@ -102,7 +102,7 @@ function Signup() {
             {isPhoneNumberSubmitted && (
                 <>
                     <div className="auth__form-container_fields">
-                        <VerifyCode phone={phoneVerify} type={"register"} navigateTo={"/login"}/>
+                        <VerifyCode phone={phoneVerify} type={"register"} navigateTo={"/seller/login"}/>
                     </div>
                 </>
             )}

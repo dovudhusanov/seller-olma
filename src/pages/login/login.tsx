@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button} from "../../components";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "../signup/signup.css"
 // @ts-ignore
 import authImage from "../../assets/sign_.jpg"
@@ -23,14 +23,16 @@ function Login() {
 
     const dispatch: any = useDispatch()
 
+    const navigate = useNavigate()
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             setIsLoading(true)
             await dispatch(LoginUser(form.phoneNumber, form.password));
             setIsLoading(false); // set isLoading back to false after dispatch is complete
+            navigate("/")
         } catch (error) {
-            <Alert severity="error">This is an error alert — check it out!</Alert>
             setIsLoading(false); // set isLoading back to false in case of error
             console.error(error);
         }

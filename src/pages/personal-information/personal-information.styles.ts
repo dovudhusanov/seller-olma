@@ -19,6 +19,16 @@ export const PersonalInformationStyles = styled.div`
     }
   }
 
+  @media screen and (max-width: 425px) {
+    & button{
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    padding: 20px;
+  }
+
   & .with-bio {
     & > div {
       width: 50%;
