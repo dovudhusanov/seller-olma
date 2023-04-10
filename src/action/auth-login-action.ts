@@ -1,6 +1,6 @@
 import {AuthLoginTypes} from "../constants/auth-login-type";
 import {AccessTokenRefreshedApi, LoginApi} from "../api";
-import {GetSellerApi} from "../api/profile/get-seller-api";
+import {GetUserApi} from "../api/profile/get-user-api";
 
 export const loginStart = () => ({
     type: AuthLoginTypes.LOGIN_START,
@@ -39,8 +39,8 @@ export const LoginUser = (phoneNumber: any, password: any) => {
             localStorage.setItem('access', response.data.access);
             localStorage.setItem('refresh', response.data.refresh);
             localStorage.setItem("userId", response.data.id)
-            const sellerRes = await GetSellerApi(localStorage.getItem("userId"))
-            sellerRes.data.profile && localStorage.setItem("sellerId", sellerRes.data.profile)
+            const sellerRes = await GetUserApi(localStorage.getItem("userId"))
+            sellerRes.data.seller && localStorage.setItem("sellerId", sellerRes.data.seller)
             // window.location.reload()
             window.location.href = '/';
         } catch (error) {

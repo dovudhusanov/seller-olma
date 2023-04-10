@@ -1,10 +1,11 @@
-import React, {FormEvent, useEffect, useState} from 'react';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import React, {useEffect, useState} from 'react';
+import {Formik, Form, Field} from 'formik';
 import * as yup from 'yup';
-import {FormStyle, PersonalInformationStyles, Warning} from "./personal-information.styles";
+import { PersonalInformationStyles, Warning} from "./personal-information.styles";
 import {WarningIcon} from "../../icons";
 import {Button, Stack, TextField, Typography} from "@mui/material";
-import {EditSellerInfoApi} from "../../api/profile/edit-seller-info-api";
+import {CreateSellerInfoApi} from "../../api/profile/create-seller-info-api";
+import {GetUserApi} from "../../api/profile/get-user-api";
 import {GetSellerApi} from "../../api/profile/get-seller-api";
 
 const schema = yup.object().shape({
@@ -21,59 +22,83 @@ const schema = yup.object().shape({
 });
 
 interface PersonalInformationInterface {
-    firstName: string
-    lastName: string
+    first_name: string
+    last_name: string
     surname: string
     email: string
     inn: string
-    bankMFO: string
-    bankAccount: string
-    shopName: string
+    bank_mfo: string
+    bank_account: string
+    shop_name: string
     address: string
     bio: string
 }
 
 function PersonalInformation() {
 
-    async function GetSeller() {
-        await GetSellerApi(5)
+    const [sellerData, setSellerData] = useState<PersonalInformationInterface | any>([])
+
+    async function GetUser() {
+        await GetUserApi(localStorage.getItem("userId"))
             .then((res: any) => {
+                localStorage.setItem("sellerId", res.data.seller)
+            })
+
+        await GetSellerApi(localStorage.getItem("sellerId"))
+            .then((res: any) => {
+                setSellerData(res.data)
+                setValue({
+                    first_name: res?.data?.first_name,
+                    last_name: res?.data?.last_name,
+                    email: res?.data?.email,
+                    surname: res?.data?.surname,
+                    address: res?.data?.address,
+                    inn: res?.data?.inn,
+                    bio: res?.data?.bio,
+                    bank_account: res?.data?.bank_account,
+                    bank_mfo: res?.data?.bank_mfo,
+                    shop_name: res.data?.shop_name
+                })
                 console.log(res.data)
             })
     }
 
     useEffect(() => {
-        GetSeller()
+        GetUser()
     }, [])
 
     const [value, setValue] = useState<PersonalInformationInterface>({
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         surname: '',
         email: '',
         inn: '',
-        bankMFO: '',
-        bankAccount: '',
-        shopName: '',
+        bank_mfo: '',
+        bank_account: '',
+        shop_name: '',
         address: '',
         bio: '',
     })
 
     const handleEdit = async (values: PersonalInformationInterface) => {
-        const {firstName, lastName, shopName, bankAccount, bankMFO, bio, inn, address, surname, email} = values
-        await EditSellerInfoApi(localStorage.getItem("userId"), {
-            first_name: firstName,
-            last_name: lastName,
-            shop_name: shopName,
-            bank_mfo: bankMFO,
-            bank_account: bankAccount,
+        const {first_name, last_name, shop_name, bank_account, bank_mfo, bio, inn, address, surname, email} = values
+        await CreateSellerInfoApi(localStorage.getItem("userId"), {
+            first_name,
+            last_name,
+            shop_name,
+            bank_mfo,
+            bank_account,
             bio,
             inn,
             address,
             surname,
             email,
-            images: [1]
+            shop_picture: [1]
         })
+    }
+
+    const handleChange = (e: React.ChangeEvent<any>) => {
+        setValue({...value, [e.target.name]: e.target.value})
     }
 
     return (
@@ -89,25 +114,29 @@ function PersonalInformation() {
                     handleEdit(values)
                 }}
             >
-                {({errors, touched}) => (
+                {({errors, values, touched}) => (
                     <Form>
                         <Typography fontSize={"20px"} paddingTop={"20px"}>Personal Information</Typography>
                         <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>
                             <Field
-                                error={errors.firstName && touched.firstName}
-                                name="firstName"
+                                error={errors.first_name && touched.first_name}
+                                name="first_name"
                                 id="outlined-required"
                                 label="First Name"
                                 as={TextField}
                                 required
+                                onChange={handleChange}
+                                value={value.first_name}
                             />
                             <Field
-                                error={errors.lastName && touched.lastName}
-                                name="lastName"
+                                error={errors.last_name && touched.last_name}
+                                name="last_name"
                                 id="outlined-required"
                                 label="Last Name"
                                 as={TextField}
                                 required
+                                value={value.last_name}
+                                onChange={handleChange}
                             />
                             <Field
                                 error={errors.surname && touched.surname}
@@ -116,6 +145,8 @@ function PersonalInformation() {
                                 label="Surname"
                                 as={TextField}
                                 required
+                                value={value.surname}
+                                onChange={handleChange}
                             />
                             <Field
                                 error={errors.email && touched.email}
@@ -124,6 +155,8 @@ function PersonalInformation() {
                                 label="Email"
                                 as={TextField}
                                 required
+                                value={value.email}
+                                onChange={handleChange}
 
                             />
                         </Stack>
@@ -139,33 +172,41 @@ function PersonalInformation() {
                                 required
                                 inputProps={{maxLength: 8}}
                                 helperText={errors.inn}
+                                value={value.inn}
+                                onChange={handleChange}
                             />
                             <Field
-                                error={errors.bankMFO && touched.bankMFO}
-                                name="bankMFO"
+                                error={errors.bank_mfo && touched.bank_mfo}
+                                name="bank_mfo"
                                 id="outlined-required"
                                 label="Bank MFO"
                                 as={TextField}
                                 required
                                 inputProps={{maxLength: 5}}
+                                value={value.bank_mfo}
+                                onChange={handleChange}
                             />
                             <Field
-                                error={errors.bankAccount && touched.bankAccount}
-                                name="bankAccount"
+                                error={errors.bank_account && touched.bank_account}
+                                name="bank_account"
                                 id="outlined-required"
                                 label="Bank Account"
                                 as={TextField}
                                 required
+                                value={value.bank_account}
+                                onChange={handleChange}
                             />
                         </Stack>
                         <Typography fontSize={"20px"} paddingTop={"20px"}>Shop Info</Typography>
                         <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info with-bio"}>
                             <Field
-                                error={errors.shopName && touched.shopName}
-                                name="shopName" id="outlined-required"
+                                error={errors.shop_name && touched.shop_name}
+                                name="shop_name" id="outlined-required"
                                 label="Shop Name"
                                 as={TextField}
                                 required
+                                value={value.shop_name}
+                                onChange={handleChange}
                             />
                             <Field
                                 error={errors.address && touched.address}
@@ -173,6 +214,8 @@ function PersonalInformation() {
                                 label="Address"
                                 as={TextField}
                                 required
+                                value={value.address}
+                                onChange={handleChange}
                             />
                             <Field
                                 error={errors.bio && touched.bio}
@@ -181,7 +224,10 @@ function PersonalInformation() {
                                 multiline
                                 rows={4}
                                 label="Bio" as={TextField}
-                                required/>
+                                required
+                                value={value.bio}
+                                onChange={handleChange}
+                            />
 
                         </Stack>
                         <Button sx={{marginTop: "10px"}} variant={"contained"} type={"submit"}>Save</Button>
