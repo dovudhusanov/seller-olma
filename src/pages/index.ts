@@ -5,6 +5,7 @@ import Login from "./login/login";
 import VerifyCode from "./verify-code/verify-code";
 import NewPassword from "./new-password";
 import About from "./about/about";
+import Products from "./products/products";
 
 export {
     Landing,
@@ -13,5 +14,6 @@ export {
     Login,
     VerifyCode,
     NewPassword,
-    About
+    About,
+    Products
 }

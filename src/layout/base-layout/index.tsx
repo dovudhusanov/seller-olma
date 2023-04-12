@@ -5,7 +5,8 @@ import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     UserOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    DropboxOutlined
 } from '@ant-design/icons';
 import {Layout, Menu, theme} from 'antd';
 // @ts-ignore
@@ -72,6 +73,12 @@ export function BaseLayout() {
                                    onClick={() => setIsMobileBtn(false)}>
                             <NavLink to="/seller/personal-information">Personal info</NavLink>
                         </Menu.Item>
+                        {localStorage.getItem("sellerId") && (
+                            <Menu.Item className={"first-li"} key="2" icon={<DropboxOutlined/>}
+                                       onClick={() => setIsMobileBtn(false)}>
+                                <NavLink to={`/seller/${localStorage.getItem("sellerId")}/products/all`}>Products</NavLink>
+                            </Menu.Item>
+                        )}
                         <Menu.Item className={"logout-btn"} key="4" icon={<LogoutOutlined/>}
                                    onClick={() => setIsMobileBtn(false)} style={{marginTop: 'auto'}}>
                             <span onClick={handleLogout}>Log Out</span>

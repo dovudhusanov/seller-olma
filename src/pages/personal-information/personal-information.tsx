@@ -1,73 +1,68 @@
 import React, {useEffect, useState} from 'react';
-import {Formik, Form, Field} from 'formik';
+import {Formik, Form, Field, useFormikContext} from 'formik';
 import * as yup from 'yup';
-import { PersonalInformationStyles, Warning} from "./personal-information.styles";
+import {PersonalInformationStyles, Warning} from "./personal-information.styles";
 import {WarningIcon} from "../../icons";
 import {Button, Stack, TextField, Typography} from "@mui/material";
-import {CreateSellerInfoApi} from "../../api/profile/create-seller-info-api";
+import {CreateSellerApi} from "../../api/profile/create-seller-api";
 import {GetUserApi} from "../../api/profile/get-user-api";
 import {GetSellerApi} from "../../api/profile/get-seller-api";
+import {SellerEditApi} from "../../api/profile/seller-edit-api";
+import {SellerTypes} from "../../types/seller.types";
 
 const schema = yup.object().shape({
-    firstName: yup.string().required('First name is required'),
-    lastName: yup.string().required('Last name is required'),
+    first_name: yup.string().required('First name is required'),
+    last_name: yup.string().required('Last name is required'),
     surname: yup.string().required('Surname is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
     inn: yup.number().required('INN is required').test('inn', 'INN must be exactly 8 digits', (val: any) => val && val.toString().length === 8),
-    bankMFO: yup.number().required('Bank MFO is required').test('inn', 'Bank MFO must be exactly 5 digits', (val: any) => val && val.toString().length === 5),
-    bankAccount: yup.string().required('Bank account is required'),
-    shopName: yup.string().required('Shop name is required'),
+    bank_mfo: yup.number().required('Bank MFO is required').test('bank_mfo', 'Bank MFO must be exactly 5 digits', (val: any) => val && val.toString().length === 5),
+    bank_account: yup.string().required('Bank account is required'),
+    shop_name: yup.string().required('Shop name is required'),
     address: yup.string().required('Address is required'),
     bio: yup.string().required('Bio is required'),
 });
 
-interface PersonalInformationInterface {
-    first_name: string
-    last_name: string
-    surname: string
-    email: string
-    inn: string
-    bank_mfo: string
-    bank_account: string
-    shop_name: string
-    address: string
-    bio: string
-}
-
 function PersonalInformation() {
 
-    const [sellerData, setSellerData] = useState<PersonalInformationInterface | any>([])
+    const [userData, setUserData] = useState<any>([])
 
-    async function GetUser() {
-        await GetUserApi(localStorage.getItem("userId"))
-            .then((res: any) => {
-                localStorage.setItem("sellerId", res.data.seller)
-            })
+    async function GetUser(): Promise<void> {
+        try {
+            const response = await GetUserApi(localStorage.getItem("userId"));
+            setUserData(response?.data);
+            if (response?.data?.seller) {
+                localStorage.setItem("sellerId", response.data.seller);
+            }
+        } catch (error) {
+            console.error(error);
+        }
 
-        await GetSellerApi(localStorage.getItem("sellerId"))
-            .then((res: any) => {
-                setSellerData(res.data)
-                setValue({
-                    first_name: res?.data?.first_name,
-                    last_name: res?.data?.last_name,
-                    email: res?.data?.email,
-                    surname: res?.data?.surname,
-                    address: res?.data?.address,
-                    inn: res?.data?.inn,
-                    bio: res?.data?.bio,
-                    bank_account: res?.data?.bank_account,
-                    bank_mfo: res?.data?.bank_mfo,
-                    shop_name: res.data?.shop_name
-                })
-                console.log(res.data)
+        try {
+            const res = await GetSellerApi(localStorage.getItem("sellerId"))
+            setValue({
+                first_name: res?.data?.first_name,
+                last_name: res?.data?.last_name,
+                email: res?.data?.email,
+                surname: res?.data?.surname,
+                address: res?.data?.address,
+                inn: res?.data?.inn,
+                bio: res?.data?.bio,
+                bank_account: res?.data?.bank_account,
+                bank_mfo: res?.data?.bank_mfo,
+                shop_name: res.data?.shop_name,
+                shop_picture: res?.data?.image
             })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
         GetUser()
     }, [])
 
-    const [value, setValue] = useState<PersonalInformationInterface>({
+    const [value, setValue] = useState<SellerTypes>({
         first_name: '',
         last_name: '',
         surname: '',
@@ -78,28 +73,44 @@ function PersonalInformation() {
         shop_name: '',
         address: '',
         bio: '',
+        shop_picture: [0]
     })
 
-    const handleEdit = async (values: PersonalInformationInterface) => {
+    const handleSubmit = async (values: SellerTypes) => {
         const {first_name, last_name, shop_name, bank_account, bank_mfo, bio, inn, address, surname, email} = values
-        await CreateSellerInfoApi(localStorage.getItem("userId"), {
-            first_name,
-            last_name,
-            shop_name,
-            bank_mfo,
-            bank_account,
-            bio,
-            inn,
-            address,
-            surname,
-            email,
-            shop_picture: [1]
-        })
+        if (userData.seller) {
+            const userRes = await GetUserApi(localStorage.getItem("userId"))
+            userRes?.data?.seller && localStorage.setItem("sellerId", userRes?.data.seller)
+            await SellerEditApi(localStorage.getItem("sellerId"), {
+                first_name,
+                last_name,
+                shop_name,
+                bank_mfo,
+                bank_account,
+                bio,
+                inn,
+                address,
+                surname,
+                email,
+                shop_picture: [2]
+            })
+        } else {
+            await CreateSellerApi(localStorage.getItem("userId"), {
+                first_name,
+                last_name,
+                shop_name,
+                bank_mfo,
+                bank_account,
+                bio,
+                inn,
+                address,
+                surname,
+                email,
+                shop_picture: [1]
+            })
+        }
     }
 
-    const handleChange = (e: React.ChangeEvent<any>) => {
-        setValue({...value, [e.target.name]: e.target.value})
-    }
 
     return (
         <PersonalInformationStyles>
@@ -108,56 +119,65 @@ function PersonalInformation() {
                 <span>Fields marked with an asterisk (*) are required</span>
             </Warning>
             <Formik
+                enableReinitialize
                 initialValues={value}
                 validationSchema={schema}
                 onSubmit={values => {
-                    handleEdit(values)
+                    handleSubmit(values)
                 }}
             >
-                {({errors, values, touched}) => (
+                {({errors, values, touched, handleChange, handleBlur}) => (
                     <Form>
                         <Typography fontSize={"20px"} paddingTop={"20px"}>Personal Information</Typography>
                         <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>
                             <Field
+                                type={"text"}
                                 error={errors.first_name && touched.first_name}
                                 name="first_name"
                                 id="outlined-required"
                                 label="First Name"
+                                onBlur={handleBlur}
                                 as={TextField}
                                 required
                                 onChange={handleChange}
-                                value={value.first_name}
+                                value={values.first_name}
                             />
                             <Field
+                                type={"text"}
                                 error={errors.last_name && touched.last_name}
                                 name="last_name"
                                 id="outlined-required"
                                 label="Last Name"
+                                onBlur={handleBlur}
                                 as={TextField}
                                 required
-                                value={value.last_name}
+                                value={values.last_name}
                                 onChange={handleChange}
                             />
                             <Field
+                                type={"text"}
                                 error={errors.surname && touched.surname}
                                 name="surname"
                                 id="outlined-required"
                                 label="Surname"
                                 as={TextField}
                                 required
-                                value={value.surname}
+                                value={values.surname}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
                             <Field
+                                type={"email"}
                                 error={errors.email && touched.email}
                                 name="email"
                                 id="outlined-required"
                                 label="Email"
                                 as={TextField}
                                 required
-                                value={value.email}
+                                value={values.email}
                                 onChange={handleChange}
-
+                                helperText={errors.email}
+                                onBlur={handleBlur}
                             />
                         </Stack>
                         <Typography fontSize={"20px"} paddingTop={"20px"}>Registration Form</Typography>
@@ -172,8 +192,9 @@ function PersonalInformation() {
                                 required
                                 inputProps={{maxLength: 8}}
                                 helperText={errors.inn}
-                                value={value.inn}
+                                value={values.inn}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
                             <Field
                                 error={errors.bank_mfo && touched.bank_mfo}
@@ -183,8 +204,10 @@ function PersonalInformation() {
                                 as={TextField}
                                 required
                                 inputProps={{maxLength: 5}}
-                                value={value.bank_mfo}
+                                value={values.bank_mfo}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
+                                helperText={touched.bank_mfo && errors.bank_mfo}
                             />
                             <Field
                                 error={errors.bank_account && touched.bank_account}
@@ -193,8 +216,9 @@ function PersonalInformation() {
                                 label="Bank Account"
                                 as={TextField}
                                 required
-                                value={value.bank_account}
+                                value={values.bank_account}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
                         </Stack>
                         <Typography fontSize={"20px"} paddingTop={"20px"}>Shop Info</Typography>
@@ -205,8 +229,9 @@ function PersonalInformation() {
                                 label="Shop Name"
                                 as={TextField}
                                 required
-                                value={value.shop_name}
+                                value={values.shop_name}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
                             <Field
                                 error={errors.address && touched.address}
@@ -214,8 +239,9 @@ function PersonalInformation() {
                                 label="Address"
                                 as={TextField}
                                 required
-                                value={value.address}
+                                value={values.address}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
                             <Field
                                 error={errors.bio && touched.bio}
@@ -225,8 +251,9 @@ function PersonalInformation() {
                                 rows={4}
                                 label="Bio" as={TextField}
                                 required
-                                value={value.bio}
+                                value={values.bio}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
 
                         </Stack>

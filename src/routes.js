@@ -2,7 +2,7 @@ import React from "react";
 import {Navigate, useRoutes} from "react-router-dom";
 import {
     PersonalInformation,
-    Landing, Signup, Login, About
+    Landing, Signup, Login, About, Products
 } from "./pages";
 import {BaseLayout} from "./layout/base-layout";
 
@@ -12,11 +12,11 @@ export const Routes = () => {
     const PrivateRoute = [
         {
             path: '/',
-            element: <BaseLayout/>,
+            element: <BaseLayout />,
             children: [
                 {path: "/", element: <Navigate to={"/seller/personal-information"}/>},
                 {path: "/seller/personal-information", element: <PersonalInformation/>},
-                {path: "/about", element: <About/>},
+                {path: `/seller/:sellerId/products/all`, element: <Products/>},
                 // {path: "/profile", element: <Navigate to={"/user/info"}/>},
                 // {path: "/user/my-orders", element: <MyOrders/>},
                 // {path: "/user/info", element: <MyInfos/>},
