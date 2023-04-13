@@ -7,8 +7,12 @@ import authImage from "../../assets/sign_.jpg"
 import {useDispatch} from "react-redux";
 import {LoginUser} from "../../action/auth-login-action";
 import {Alert} from "@mui/material";
+import {ChangeTitle, ScrollTop} from "../../middleware";
 
 function Login() {
+
+    ScrollTop()
+    ChangeTitle("Login")
 
     const [form, setForm] = useState({
         phoneNumber: '',
@@ -31,7 +35,6 @@ function Login() {
             setIsLoading(true)
             await dispatch(LoginUser(form.phoneNumber, form.password));
             setIsLoading(false); // set isLoading back to false after dispatch is complete
-            navigate("/")
         } catch (error) {
             setIsLoading(false); // set isLoading back to false in case of error
             console.error(error);

@@ -1,7 +1,11 @@
 import React, {useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
+import {ChangeTitle, ScrollTop} from "../../middleware";
 
 function Products() {
+
+    ScrollTop()
+    ChangeTitle("Products")
 
     const {sellerId} = useParams()
 

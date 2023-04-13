@@ -8,8 +8,12 @@ import {useDispatch} from "react-redux";
 import {VerifyCode} from "../index";
 import {SignupApi} from "../../api";
 import {signFailure, signStart} from "../../action/signup-action";
+import {ChangeTitle, ScrollTop} from "../../middleware";
 
 function Signup() {
+
+    ScrollTop()
+    ChangeTitle("Sign Up")
 
     const [form, setForm] = useState({
         password: '',

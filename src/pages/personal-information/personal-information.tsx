@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Formik, Form, Field, useFormikContext} from 'formik';
+import {Formik, Form, Field} from 'formik';
 import * as yup from 'yup';
 import {PersonalInformationStyles, Warning} from "./personal-information.styles";
 import {WarningIcon} from "../../icons";
@@ -9,6 +9,7 @@ import {GetUserApi} from "../../api/profile/get-user-api";
 import {GetSellerApi} from "../../api/profile/get-seller-api";
 import {SellerEditApi} from "../../api/profile/seller-edit-api";
 import {SellerTypes} from "../../types/seller.types";
+import {ChangeTitle, ScrollTop} from "../../middleware";
 
 const schema = yup.object().shape({
     first_name: yup.string().required('First name is required'),
@@ -25,9 +26,14 @@ const schema = yup.object().shape({
 
 function PersonalInformation() {
 
+    ScrollTop()
+    ChangeTitle("Personal Information")
+
     const [userData, setUserData] = useState<any>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     async function GetUser(): Promise<void> {
+        setIsLoading(true)
         try {
             const response = await GetUserApi(localStorage.getItem("userId"));
             setUserData(response?.data);
@@ -54,8 +60,10 @@ function PersonalInformation() {
                 shop_picture: res?.data?.image
             })
         } catch (error) {
+            setIsLoading(true)
             console.log(error)
         }
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -114,153 +122,158 @@ function PersonalInformation() {
 
     return (
         <PersonalInformationStyles>
-            <Warning>
-                <WarningIcon/>
-                <span>Fields marked with an asterisk (*) are required</span>
-            </Warning>
-            <Formik
-                enableReinitialize
-                initialValues={value}
-                validationSchema={schema}
-                onSubmit={values => {
-                    handleSubmit(values)
-                }}
-            >
-                {({errors, values, touched, handleChange, handleBlur}) => (
-                    <Form>
-                        <Typography fontSize={"20px"} paddingTop={"20px"}>Personal Information</Typography>
-                        <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>
-                            <Field
-                                type={"text"}
-                                error={errors.first_name && touched.first_name}
-                                name="first_name"
-                                id="outlined-required"
-                                label="First Name"
-                                onBlur={handleBlur}
-                                as={TextField}
-                                required
-                                onChange={handleChange}
-                                value={values.first_name}
-                            />
-                            <Field
-                                type={"text"}
-                                error={errors.last_name && touched.last_name}
-                                name="last_name"
-                                id="outlined-required"
-                                label="Last Name"
-                                onBlur={handleBlur}
-                                as={TextField}
-                                required
-                                value={values.last_name}
-                                onChange={handleChange}
-                            />
-                            <Field
-                                type={"text"}
-                                error={errors.surname && touched.surname}
-                                name="surname"
-                                id="outlined-required"
-                                label="Surname"
-                                as={TextField}
-                                required
-                                value={values.surname}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Field
-                                type={"email"}
-                                error={errors.email && touched.email}
-                                name="email"
-                                id="outlined-required"
-                                label="Email"
-                                as={TextField}
-                                required
-                                value={values.email}
-                                onChange={handleChange}
-                                helperText={errors.email}
-                                onBlur={handleBlur}
-                            />
-                        </Stack>
-                        <Typography fontSize={"20px"} paddingTop={"20px"}>Registration Form</Typography>
-                        <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>
-                            <Field
-                                type={"text"}
-                                error={errors.inn && touched.inn}
-                                name="inn"
-                                id="outlined-required"
-                                label="INN"
-                                as={TextField}
-                                required
-                                inputProps={{maxLength: 8}}
-                                helperText={errors.inn}
-                                value={values.inn}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Field
-                                error={errors.bank_mfo && touched.bank_mfo}
-                                name="bank_mfo"
-                                id="outlined-required"
-                                label="Bank MFO"
-                                as={TextField}
-                                required
-                                inputProps={{maxLength: 5}}
-                                value={values.bank_mfo}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                helperText={touched.bank_mfo && errors.bank_mfo}
-                            />
-                            <Field
-                                error={errors.bank_account && touched.bank_account}
-                                name="bank_account"
-                                id="outlined-required"
-                                label="Bank Account"
-                                as={TextField}
-                                required
-                                value={values.bank_account}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                        </Stack>
-                        <Typography fontSize={"20px"} paddingTop={"20px"}>Shop Info</Typography>
-                        <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info with-bio"}>
-                            <Field
-                                error={errors.shop_name && touched.shop_name}
-                                name="shop_name" id="outlined-required"
-                                label="Shop Name"
-                                as={TextField}
-                                required
-                                value={values.shop_name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Field
-                                error={errors.address && touched.address}
-                                name="address" id="outlined-required"
-                                label="Address"
-                                as={TextField}
-                                required
-                                value={values.address}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Field
-                                error={errors.bio && touched.bio}
-                                name="bio"
-                                id="outlined-required"
-                                multiline
-                                rows={4}
-                                label="Bio" as={TextField}
-                                required
-                                value={values.bio}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-
-                        </Stack>
-                        <Button sx={{marginTop: "10px"}} variant={"contained"} type={"submit"}>Save</Button>
-                    </Form>
-                )}
-            </Formik>
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
+                <>
+                    <Warning>
+                        <WarningIcon/>
+                        <span>Fields marked with an asterisk (*) are required</span>
+                    </Warning>
+                    <Formik
+                        enableReinitialize
+                        initialValues={value}
+                        validationSchema={schema}
+                        onSubmit={values => {
+                            handleSubmit(values)
+                        }}
+                    >
+                        {({errors, values, touched, handleChange, handleBlur}) => (
+                            <Form>
+                                <Typography fontSize={"20px"} paddingTop={"20px"}>Personal Information</Typography>
+                                <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>
+                                    <Field
+                                        type={"text"}
+                                        error={errors.first_name && touched.first_name}
+                                        name="first_name"
+                                        id="outlined-required"
+                                        label="First Name"
+                                        onBlur={handleBlur}
+                                        as={TextField}
+                                        required
+                                        onChange={handleChange}
+                                        value={values.first_name}
+                                    />
+                                    <Field
+                                        type={"text"}
+                                        error={errors.last_name && touched.last_name}
+                                        name="last_name"
+                                        id="outlined-required"
+                                        label="Last Name"
+                                        onBlur={handleBlur}
+                                        as={TextField}
+                                        required
+                                        value={values.last_name}
+                                        onChange={handleChange}
+                                    />
+                                    <Field
+                                        type={"text"}
+                                        error={errors.surname && touched.surname}
+                                        name="surname"
+                                        id="outlined-required"
+                                        label="Surname"
+                                        as={TextField}
+                                        required
+                                        value={values.surname}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <Field
+                                        type={"email"}
+                                        error={errors.email && touched.email}
+                                        name="email"
+                                        id="outlined-required"
+                                        label="Email"
+                                        as={TextField}
+                                        required
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        helperText={errors.email}
+                                        onBlur={handleBlur}
+                                    />
+                                </Stack>
+                                <Typography fontSize={"20px"} paddingTop={"20px"}>Registration Form</Typography>
+                                <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>
+                                    <Field
+                                        type={"text"}
+                                        error={errors.inn && touched.inn}
+                                        name="inn"
+                                        id="outlined-required"
+                                        label="INN"
+                                        as={TextField}
+                                        required
+                                        inputProps={{maxLength: 8}}
+                                        helperText={errors.inn}
+                                        value={values.inn}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <Field
+                                        error={errors.bank_mfo && touched.bank_mfo}
+                                        name="bank_mfo"
+                                        id="outlined-required"
+                                        label="Bank MFO"
+                                        as={TextField}
+                                        required
+                                        inputProps={{maxLength: 5}}
+                                        value={values.bank_mfo}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={touched.bank_mfo && errors.bank_mfo}
+                                    />
+                                    <Field
+                                        error={errors.bank_account && touched.bank_account}
+                                        name="bank_account"
+                                        id="outlined-required"
+                                        label="Bank Account"
+                                        as={TextField}
+                                        required
+                                        value={values.bank_account}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </Stack>
+                                <Typography fontSize={"20px"} paddingTop={"20px"}>Shop Info</Typography>
+                                <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info with-bio"}>
+                                    <Field
+                                        error={errors.shop_name && touched.shop_name}
+                                        name="shop_name" id="outlined-required"
+                                        label="Shop Name"
+                                        as={TextField}
+                                        required
+                                        value={values.shop_name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <Field
+                                        error={errors.address && touched.address}
+                                        name="address" id="outlined-required"
+                                        label="Address"
+                                        as={TextField}
+                                        required
+                                        value={values.address}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <Field
+                                        error={errors.bio && touched.bio}
+                                        name="bio"
+                                        id="outlined-required"
+                                        multiline
+                                        rows={4}
+                                        label="Bio" as={TextField}
+                                        required
+                                        value={values.bio}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </Stack>
+                                <Button sx={{marginTop: "10px"}} variant={"contained"} type={"submit"}>Save</Button>
+                            </Form>
+                        )}
+                    </Formik>
+                </>
+            )}
         </PersonalInformationStyles>
     )
 }

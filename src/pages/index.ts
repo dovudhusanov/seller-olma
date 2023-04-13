@@ -6,6 +6,8 @@ import VerifyCode from "./verify-code/verify-code";
 import NewPassword from "./new-password";
 import About from "./about/about";
 import Products from "./products/products";
+import CreateProduct from "./create-product/create-product";
+import NotFound from "./not-found/not-found";
 
 export {
     Landing,
@@ -15,5 +17,7 @@ export {
     VerifyCode,
     NewPassword,
     About,
-    Products
+    Products,
+    CreateProduct,
+    NotFound
 }

@@ -1,6 +1,7 @@
 import {AuthLoginTypes} from "../constants/auth-login-type";
 import {AccessTokenRefreshedApi, LoginApi} from "../api";
 import {GetUserApi} from "../api/profile/get-user-api";
+import {useNavigate} from "react-router-dom";
 
 export const loginStart = () => ({
     type: AuthLoginTypes.LOGIN_START,
@@ -42,7 +43,7 @@ export const LoginUser = (phoneNumber: any, password: any) => {
             const sellerRes = await GetUserApi(localStorage.getItem("userId"))
             sellerRes.data.seller && localStorage.setItem("sellerId", sellerRes.data.seller)
             // window.location.reload()
-            window.location.href = '/';
+            window.location.href = '/seller/personal-information';
         } catch (error) {
             dispatch(loginFailure());
         }

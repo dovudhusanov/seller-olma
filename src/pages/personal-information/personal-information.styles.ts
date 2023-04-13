@@ -18,6 +18,11 @@ export const PersonalInformationStyles = styled.div`
       }
     }
   }
+  
+  & button{
+    margin-top: 10px!important;
+    width: 100px!important;
+  }
 
   @media screen and (max-width: 425px) {
     & button{

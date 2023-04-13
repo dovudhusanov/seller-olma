@@ -2,7 +2,7 @@ import React from "react";
 import {Navigate, useRoutes} from "react-router-dom";
 import {
     PersonalInformation,
-    Landing, Signup, Login, About, Products
+    Landing, Signup, Login, Products, CreateProduct, NotFound
 } from "./pages";
 import {BaseLayout} from "./layout/base-layout";
 
@@ -12,11 +12,13 @@ export const Routes = () => {
     const PrivateRoute = [
         {
             path: '/',
-            element: <BaseLayout />,
+            element: <BaseLayout/>,
             children: [
                 {path: "/", element: <Navigate to={"/seller/personal-information"}/>},
                 {path: "/seller/personal-information", element: <PersonalInformation/>},
                 {path: `/seller/:sellerId/products/all`, element: <Products/>},
+                {path: `/seller/:sellerId/products/create`, element: <CreateProduct/>},
+                {path: `/*`, element: <NotFound/>},
                 // {path: "/profile", element: <Navigate to={"/user/info"}/>},
                 // {path: "/user/my-orders", element: <MyOrders/>},
                 // {path: "/user/info", element: <MyInfos/>},
@@ -39,6 +41,7 @@ export const Routes = () => {
                 {path: "/", element: <Landing/>},
                 {path: "/seller/signup", element: <Signup/>},
                 {path: "/seller/login", element: <Login/>},
+                {path: `/*`, element: <NotFound/>},
                 // {path: "/verify-phone-number", element: <VerifyCode/>},
                 // {path: "/reset-password", element: <ResetPassword/>},
                 // {path: "/new-password", element: <NewPassword/>},

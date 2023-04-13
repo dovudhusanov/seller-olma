@@ -9,9 +9,13 @@ import {
     Showcase
 } from "../../components/landing-page-components";
 import Faq from "../../components/landing-page-components/FAQ/faq";
-import {ScrollToTop} from "../../middleware";
+import {ChangeTitle, ScrollTop, ScrollToTop} from "../../middleware";
 
 function Landing() {
+
+    ScrollTop()
+    ChangeTitle("Olma Market")
+
     return (
         <div className="body-wrap">
             <Navbar/>
