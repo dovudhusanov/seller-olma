@@ -1014,8 +1014,9 @@ img {
     }
 
 
-    .hero-cta button + button {
-        margin-top: 16px
+    .hero-cta button {
+        width: 100% !important;
+        margin-bottom: 10px;
     }
 
     .hero-figure::after, .hero-figure-box-03, .hero-figure-box-04, .hero-figure-box-09 {
