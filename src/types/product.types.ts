@@ -1,10 +1,10 @@
 export interface ProductTypes {
-    product_name: string
+    name: string
     category: string
-    seller: string
+    seller: string | any
     description: string
     price: string
     discount: number
     images: string[]
-    attributes: string[]
+    attributes: object[]
 }

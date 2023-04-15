@@ -41,7 +41,7 @@ export const LoginUser = (phoneNumber: any, password: any) => {
             localStorage.setItem('refresh', response.data.refresh);
             localStorage.setItem("userId", response.data.id)
             const sellerRes = await GetUserApi(localStorage.getItem("userId"))
-            sellerRes.data.seller && localStorage.setItem("sellerId", sellerRes.data.seller)
+            sellerRes.data[0].seller && localStorage.setItem("sellerId", sellerRes.data[0].seller)
             // window.location.reload()
             window.location.href = '/seller/personal-information';
         } catch (error) {

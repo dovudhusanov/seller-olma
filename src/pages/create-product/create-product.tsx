@@ -19,9 +19,11 @@ import * as yup from "yup";
 import {ProductTypes} from "../../types/product.types";
 import {SelectImagesIcon} from "../../icons/select-images.icon";
 import {CategoriesData} from "../../data";
+import {UploadProductImagesApi} from "../../api/product/upload-product-images-api";
+import {CreateProductApi} from "../../api/product/create-product-api";
 
 const schema = yup.object().shape({
-    product_name: yup.string().required('Product name is required'),
+    name: yup.string().required('Product name is required'),
     description: yup.string().required('description is required'),
     category: yup.string().required('Category is required'),
     price: yup.string().required("Price should not be $0.00"),
@@ -44,25 +46,27 @@ function CreateProduct() {
             : navigate("/")
     }, [window.location.pathname])
 
-    const handleSubmit = (values: ProductTypes) => {
-
-    }
-
-    const [value, setValue] = useState<ProductTypes>({
-        product_name: '',
-        category: "",
-        seller: "",
-        description: "",
-        price: "",
-        discount: 0,
-        images: [],
-        attributes: []
-    })
-
     const selectImgRef: any = useRef()
 
     const [images, setImages] = useState<any>([]);
     const [imagePreviews, setImagePreviews] = useState<any>([])
+    const [imageIds, setImageIds] = useState<string[]>([])
+
+    const [value, setValue] = useState<ProductTypes>({
+        name: '',
+        category: "",
+        seller: localStorage.getItem("sellerId"),
+        description: "",
+        price: "",
+        discount: 0,
+        images: [],
+        attributes: [
+            {
+                colour: "black",
+            }
+        ]
+    })
+
 
     const handleFileUpload = (event: React.ChangeEvent<any>) => {
         const files = Array.from(event.target.files);
@@ -79,6 +83,23 @@ function CreateProduct() {
         setImages((prevState: any) => [...prevState, ...files]);
         setImagePreviews((prevState: any) => [...prevState, ...imagePreviews]);
     };
+
+    const handleAllImages = async () => {
+        const formData: any = new FormData();
+        images.forEach((file: any, index: number) => {
+            formData.append(`file[${index}]`, file, file.name);
+        });
+
+        try {
+            const res = await UploadProductImagesApi(formData);
+            console.log(res.data);
+            const imageIdsString = res.data.results.map((result: any) => String(result))
+            setImageIds((prevState: any) => [...prevState, ...imageIdsString])
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const deleteImage = (index: any) => {
         const newImages = [...images];
@@ -98,6 +119,26 @@ function CreateProduct() {
         </div>
     ));
 
+    const handleSubmit = async (values: ProductTypes) => {
+        const {name, price, category, description, seller, discount, attributes} = values
+        try {
+            const res = await CreateProductApi({
+                name,
+                price,
+                category,
+                description,
+                seller,
+                discount,
+                attributes,
+                images: ["60", "61"]
+            })
+            console.log(res)
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <CreateProductStyles>
             <Formik
@@ -113,17 +154,17 @@ function CreateProduct() {
                         <LeftForm>
                             <Field
                                 type={"text"}
-                                error={errors.product_name && touched.product_name}
-                                name="product_name"
+                                error={errors.name && touched.name}
+                                name="name"
                                 id="outlined-required"
                                 label="Product Name"
                                 onBlur={handleBlur}
                                 as={TextField}
                                 required
                                 onChange={handleChange}
-                                value={values.product_name}
+                                value={values.name}
                                 fullWidth
-                                helperText={errors.product_name}
+                                helperText={errors.name}
                             />
                             <Typography
                                 sx={{
@@ -190,7 +231,7 @@ function CreateProduct() {
                                         setImagePreviews([])
                                         setImages([])
                                     }}>Remove All</Button>
-                                    <Button variant={"contained"}>Upload Files</Button>
+                                    <Button variant={"contained"} onClick={handleAllImages}>Upload Files</Button>
                                 </SelectedImagesButton>
                             )}
                         </LeftForm>
@@ -235,6 +276,7 @@ function CreateProduct() {
                                     />
                                 </PriceInput>
                             </RightForm>
+                            <Button type={"submit"}>Create Product</Button>
                         </Right>
                     </Form>
                 )}

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import "./base-layout.css"
-import {NavLink, Outlet, useNavigate} from "react-router-dom";
+import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -67,7 +67,6 @@ export function BaseLayout() {
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
                     >
                         <Menu.Item className={"first-li"} key="1" icon={<UserOutlined/>}
                                    onClick={() => setIsMobileBtn(false)}>
@@ -76,12 +75,13 @@ export function BaseLayout() {
                         {localStorage.getItem("sellerId") && (
                             <Menu.Item className={"first-li"} key="2" icon={<DropboxOutlined/>}
                                        onClick={() => setIsMobileBtn(false)}>
-                                <NavLink to={`/seller/${localStorage.getItem("sellerId")}/products/all`}>Products</NavLink>
+                                <NavLink
+                                    to={`/seller/${localStorage.getItem("sellerId")}/products/all`}>Products</NavLink>
                             </Menu.Item>
                         )}
                         <Menu.Item className={"logout-btn"} key="4" icon={<LogoutOutlined/>}
-                                   onClick={() => setIsMobileBtn(false)} style={{marginTop: 'auto'}}>
-                            <span onClick={handleLogout}>Log Out</span>
+                                   onClick={() => handleLogout()} style={{marginTop: 'auto'}}>
+                            <span>Log Out</span>
                         </Menu.Item>
                     </Menu>
                 </Sider>
@@ -100,7 +100,10 @@ export function BaseLayout() {
                     <Content
                         style={{
                             margin: '24px 16px',
-                            padding: window.location.pathname === "/seller/personal-information" ? 0 : 24,
+                            padding:
+                                window.location.pathname === "/seller/personal-information" ||
+                                window.location.pathname === `/seller/${localStorage.getItem("sellerId")}/products/create`
+                                    ? 0 : 24,
                             minHeight: 280,
                             background: window.location.pathname === "/seller/personal-information" ? "none" : colorBgContainer,
                             display: "flex",

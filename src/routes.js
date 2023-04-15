@@ -17,7 +17,7 @@ export const Routes = () => {
                 {path: "/", element: <Navigate to={"/seller/personal-information"}/>},
                 {path: "/seller/personal-information", element: <PersonalInformation/>},
                 {path: `/seller/:sellerId/products/all`, element: <Products/>},
-                {path: `/seller/:sellerId/products/create`, element: <CreateProduct/>},
+                {path: `/seller/:sellerId/products/create`, key: 3, element: <CreateProduct/>},
                 {path: `/*`, element: <NotFound/>},
                 // {path: "/profile", element: <Navigate to={"/user/info"}/>},
                 // {path: "/user/my-orders", element: <MyOrders/>},

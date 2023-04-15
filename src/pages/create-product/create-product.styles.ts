@@ -1,13 +1,18 @@
 import styled from "styled-components";
 
 export const CreateProductStyles = styled.div`
-    width: 100%;
-  
-  & form{
+  width: 100%;
+  padding: 20px;
+
+  @media screen and (max-width: 425px) {
+    padding: 5px;
+  }
+
+  & form {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    
+
     @media screen and (max-width: 1120px) {
       flex-direction: column;
       align-items: center;
@@ -32,8 +37,7 @@ export const LeftForm = styled.div`
   margin-right: 20px;
 
   @media screen and (max-width: 425px) {
-    padding: 3px;
-    
+    padding: 10px;
     box-shadow: none;
   }
   
@@ -54,8 +58,6 @@ export const LeftForm = styled.div`
 `
 
 export const Right = styled.div`
-  width: 100%;
-
   @media screen and (max-width: 1120px) {
     display: flex;
     justify-content: center;
@@ -94,8 +96,7 @@ export const RightForm = styled.div`
   }
 
   @media screen and (max-width: 425px) {
-    padding: 3px;
-
+    padding: 10px;
     box-shadow: none;
   }
   & > div{

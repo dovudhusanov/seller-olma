@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {ChangeTitle, ScrollTop} from "../../middleware";
+import {Box, Button} from "@mui/material";
 
 function Products() {
 
@@ -20,7 +21,16 @@ function Products() {
     }, [window.location.pathname])
 
     return (
-        <h1>Products Page!</h1>
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center"
+        }}>
+            <h1 style={{marginBottom: "10px"}}>Products Page!</h1>
+            <Link to={`/seller/${localStorage.getItem("sellerId")}/products/create`}>
+                <Button>Create Product</Button>
+            </Link>
+        </Box>
     );
 }
 

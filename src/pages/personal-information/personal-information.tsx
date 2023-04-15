@@ -10,14 +10,15 @@ import {GetSellerApi} from "../../api/profile/get-seller-api";
 import {SellerEditApi} from "../../api/profile/seller-edit-api";
 import {SellerTypes} from "../../types/seller.types";
 import {ChangeTitle, ScrollTop} from "../../middleware";
+import {useNavigate} from "react-router-dom";
 
 const schema = yup.object().shape({
     first_name: yup.string().required('First name is required'),
     last_name: yup.string().required('Last name is required'),
     surname: yup.string().required('Surname is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
-    inn: yup.number().required('INN is required').test('inn', 'INN must be exactly 8 digits', (val: any) => val && val.toString().length === 8),
-    bank_mfo: yup.number().required('Bank MFO is required').test('bank_mfo', 'Bank MFO must be exactly 5 digits', (val: any) => val && val.toString().length === 5),
+    inn: yup.number().required('INN is required').test('inn', 'INN must be exactly 9 digits', (val: any) => val && val.toString().length === 9),
+    bank_mfo: yup.number().required('Bank MFO is required').test('bank_mfo', 'Bank MFO must be exactly 6 digits', (val: any) => val && val.toString().length === 6),
     bank_account: yup.string().required('Bank account is required'),
     shop_name: yup.string().required('Shop name is required'),
     address: yup.string().required('Address is required'),
@@ -29,41 +30,31 @@ function PersonalInformation() {
     ScrollTop()
     ChangeTitle("Personal Information")
 
+    const navigate = useNavigate()
+
     const [userData, setUserData] = useState<any>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    async function GetUser(): Promise<void> {
-        setIsLoading(true)
-        try {
-            const response = await GetUserApi(localStorage.getItem("userId"));
-            setUserData(response?.data);
-            if (response?.data?.seller) {
-                localStorage.setItem("sellerId", response.data.seller);
-            }
-        } catch (error) {
-            console.error(error);
-        }
+    async function GetUser() {
+        const userRes = await GetUserApi(localStorage.getItem("userId"))
+        console.log(userRes.data)
+        userRes?.data[0]?.seller && localStorage.setItem("sellerId", userRes.data[0].seller)
+        const res = userRes?.data[0]?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
+        setUserData(userRes?.data[0]);
 
-        try {
-            const res = await GetSellerApi(localStorage.getItem("sellerId"))
-            setValue({
-                first_name: res?.data?.first_name,
-                last_name: res?.data?.last_name,
-                email: res?.data?.email,
-                surname: res?.data?.surname,
-                address: res?.data?.address,
-                inn: res?.data?.inn,
-                bio: res?.data?.bio,
-                bank_account: res?.data?.bank_account,
-                bank_mfo: res?.data?.bank_mfo,
-                shop_name: res.data?.shop_name,
-                shop_picture: res?.data?.image
-            })
-        } catch (error) {
-            setIsLoading(true)
-            console.log(error)
-        }
-        setIsLoading(false)
+        setValue({
+            first_name: res?.data[0]?.first_name,
+            last_name: res?.data[0]?.last_name,
+            email: res?.data[0]?.email,
+            surname: res?.data[0]?.surname,
+            address: res?.data[0]?.address,
+            inn: res?.data[0]?.inn,
+            bio: res?.data[0]?.bio,
+            bank_account: res?.data[0]?.bank_account,
+            bank_mfo: res?.data[0]?.bank_mfo,
+            shop_name: res.data[0]?.shop_name,
+            shop_picture: res?.data[0]?.image
+        })
     }
 
     useEffect(() => {
@@ -103,19 +94,26 @@ function PersonalInformation() {
                 shop_picture: [2]
             })
         } else {
-            await CreateSellerApi(localStorage.getItem("userId"), {
-                first_name,
-                last_name,
-                shop_name,
-                bank_mfo,
-                bank_account,
-                bio,
-                inn,
-                address,
-                surname,
-                email,
-                shop_picture: [1]
-            })
+            try {
+                const res = await CreateSellerApi(localStorage.getItem("userId"), {
+                    first_name,
+                    last_name,
+                    shop_name,
+                    bank_mfo,
+                    bank_account,
+                    bio,
+                    inn,
+                    address,
+                    surname,
+                    email,
+                    shop_picture: [1]
+                })
+                res?.data?.id && localStorage.setItem("sellerId", res?.data.id);
+                window.location.reload()
+                navigate(`seller/${localStorage.getItem("sellerId")}/products/all`)
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 
@@ -202,7 +200,7 @@ function PersonalInformation() {
                                         label="INN"
                                         as={TextField}
                                         required
-                                        inputProps={{maxLength: 8}}
+                                        inputProps={{maxLength: 9}}
                                         helperText={errors.inn}
                                         value={values.inn}
                                         onChange={handleChange}
@@ -215,7 +213,7 @@ function PersonalInformation() {
                                         label="Bank MFO"
                                         as={TextField}
                                         required
-                                        inputProps={{maxLength: 5}}
+                                        inputProps={{maxLength: 6}}
                                         value={values.bank_mfo}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -234,7 +232,8 @@ function PersonalInformation() {
                                     />
                                 </Stack>
                                 <Typography fontSize={"20px"} paddingTop={"20px"}>Shop Info</Typography>
-                                <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info with-bio"}>
+                                <Stack direction={"row"} gap={2} flexWrap={"wrap"}
+                                       className={"form-personal-info with-bio"}>
                                     <Field
                                         error={errors.shop_name && touched.shop_name}
                                         name="shop_name" id="outlined-required"
