@@ -18,7 +18,7 @@ import {logout} from "../../action/auth-login-action";
 
 const {Header, Sider, Content} = Layout;
 
-export function BaseLayout() {
+export default  function BaseLayout() {
 
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [isMobileBtn, setIsMobileBtn] = useState<any>(false)
