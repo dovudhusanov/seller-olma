@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const CreateProductStyles = styled.div`
-  width: 100%;
+  max-width: 1100px;
+  width: 1100px;
+  background-color: white;
   padding: 20px;
 
   @media screen and (max-width: 425px) {

@@ -16,6 +16,7 @@ const CreateProduct = Loadable(lazy(() => import("./pages/create-product/create-
 const NotFound = Loadable(lazy(() => import("./pages/not-found/not-found")));
 const BaseLayout = Loadable(lazy(() => import("./layout/base-layout")));
 const PersonalInformation = Loadable(lazy(() => import("./pages/personal-information/personal-information")));
+const Profile = Loadable(lazy(() => import("./pages/profile/profile")))
 
 export const Routes = () => {
     const token = localStorage.getItem("access");
@@ -27,6 +28,7 @@ export const Routes = () => {
             element: <BaseLayout/>,
             children: [
                 {path: "/", element: <Navigate to={"/seller/personal-information"}/>},
+                {path: "/seller/profile", element: <Profile />},
                 {path: "/seller/personal-information", element: <PersonalInformation/>},
                 {path: `/seller/:sellerId/products/all`, element: <Products/>},
                 {path: `/seller/:sellerId/products/create`, key: 3, element: <CreateProduct/>},

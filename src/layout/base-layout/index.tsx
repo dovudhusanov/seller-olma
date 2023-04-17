@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import "./base-layout.css"
-import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
+import {Link, NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -15,10 +15,12 @@ import {BaseLayoutMainStyle} from "./base-layout.styles";
 import {useDispatch} from "react-redux";
 import {LogoutApi} from "../../api";
 import {logout} from "../../action/auth-login-action";
+import {SettingsIcon} from "../../icons";
+import {Avatar, Box, IconButton} from "@mui/material";
 
 const {Header, Sider, Content} = Layout;
 
-export default  function BaseLayout() {
+export default function BaseLayout() {
 
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [isMobileBtn, setIsMobileBtn] = useState<any>(false)
@@ -86,7 +88,13 @@ export default  function BaseLayout() {
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
-                    <Header style={{padding: 0, background: colorBgContainer}}>
+                    <Header style={{
+                        padding: 0,
+                        background: colorBgContainer,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                    }}>
                         <div className={"mobile-logo"}>
                             <button className={"open-menu-btn"} onClick={() => setIsMobileBtn(true)}>
                                 <MenuUnfoldOutlined/>
@@ -96,6 +104,27 @@ export default  function BaseLayout() {
                                 <h2>Olma Market</h2>
                             </div>
                         </div>
+                        <Box sx={{
+                            display: "flex",
+                            marginRight: "20px"
+                        }}>
+                            <IconButton>
+                                <SettingsIcon/>
+                            </IconButton>
+                            <Link to={"/seller/profile"}>
+                                <Avatar
+                                    sx={{
+                                        width: 38,
+                                        height: 38,
+                                        marginLeft: "10px",
+                                        bgcolor: "rgb(54, 179, 126)",
+                                        fontSize: "16px",
+                                        fontWeight: 600,
+                                        cursor: "pointer"
+                                    }}
+                                >DH</Avatar>
+                            </Link>
+                        </Box>
                     </Header>
                     <Content
                         style={{
@@ -105,7 +134,10 @@ export default  function BaseLayout() {
                                 window.location.pathname === `/seller/${localStorage.getItem("sellerId")}/products/create`
                                     ? 0 : 24,
                             minHeight: 280,
-                            background: window.location.pathname === "/seller/personal-information" ? "none" : colorBgContainer,
+                            background:
+                                window.location.pathname === "/seller/personal-information" ||
+                                window.location.pathname === `/seller/${localStorage.getItem("sellerId")}/products/create`
+                                    ? "none" : colorBgContainer,
                             display: "flex",
                             justifyContent: "center",
                         }}
