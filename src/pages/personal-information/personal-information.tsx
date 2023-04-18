@@ -11,6 +11,7 @@ import {SellerEditApi} from "../../api/profile/seller-edit-api";
 import {SellerTypes} from "../../types/seller.types";
 import {ChangeTitle, ScrollTop} from "../../middleware";
 import {useNavigate} from "react-router-dom";
+import {ContentLoader} from "../../components";
 
 const schema = yup.object().shape({
     first_name: yup.string().required('First name is required'),
@@ -35,7 +36,8 @@ function PersonalInformation() {
     const [userData, setUserData] = useState<any>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    async function GetUser() {
+    async function GetUser(): Promise<void> {
+        setIsLoading(true)
         const userRes = await GetUserApi(localStorage.getItem("userId"))
         console.log(userRes.data)
         userRes?.data[0]?.seller && localStorage.setItem("sellerId", userRes.data[0].seller)
@@ -55,9 +57,10 @@ function PersonalInformation() {
             shop_name: res.data[0]?.shop_name,
             shop_picture: res?.data[0]?.image
         })
+        setIsLoading(false)
     }
 
-    useEffect(() => {
+    useEffect((): void => {
         GetUser()
     }, [])
 
@@ -75,7 +78,7 @@ function PersonalInformation() {
         shop_picture: [0]
     })
 
-    const handleSubmit = async (values: SellerTypes) => {
+    const handleSubmit = async (values: SellerTypes): Promise<void> => {
         const {first_name, last_name, shop_name, bank_account, bank_mfo, bio, inn, address, surname, email} = values
         if (userData.seller) {
             const userRes = await GetUserApi(localStorage.getItem("userId"))
@@ -121,7 +124,7 @@ function PersonalInformation() {
     return (
         <PersonalInformationStyles>
             {isLoading ? (
-                <p>Loading...</p>
+                <ContentLoader />
             ) : (
                 <>
                     <Warning>

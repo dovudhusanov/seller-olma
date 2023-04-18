@@ -136,7 +136,8 @@ export default function BaseLayout() {
                             minHeight: 280,
                             background:
                                 window.location.pathname === "/seller/personal-information" ||
-                                window.location.pathname === `/seller/${localStorage.getItem("sellerId")}/products/create`
+                                window.location.pathname === `/seller/${localStorage.getItem("sellerId")}/products/create` ||
+                                window.location.pathname === `/seller/profile`
                                     ? "none" : colorBgContainer,
                             display: "flex",
                             justifyContent: "center",

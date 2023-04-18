@@ -1,61 +1,175 @@
-import React from 'react';
-import {ProfileStyled} from "./profile.styled";
+import React, {useEffect, useState} from 'react';
+import {Form, ProfileStyles, Box} from "./profile.styled";
+import {ContentLoader, Typography} from "../../components";
+import {ChangeTitle, ScrollTop} from "../../middleware";
+import {useNavigate} from "react-router-dom";
+import {GetUserApi} from "../../api/profile/get-user-api";
+import {GetSellerApi} from "../../api/profile/get-seller-api";
+import Modal from "../../components/modal/modal";
+import {Button, TextField} from "@mui/material";
+import {Btn} from "../../components/modal/modal.styles";
 
 function Profile() {
+
+    ScrollTop()
+    ChangeTitle("Personal Information")
+
+    const navigate = useNavigate()
+
+    const [phoneNumber, setPhoneNumber] = useState<number[]>([])
+    const [profileData, setProfileData] = useState<any>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    async function GetUser(): Promise<void> {
+        setIsLoading(true)
+        const userRes = await GetUserApi(localStorage.getItem("userId"))
+        userRes?.data[0]?.seller && localStorage.setItem("sellerId", userRes.data[0].seller)
+        const res = userRes?.data[0]?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
+        setProfileData(res.data[0])
+        setPhoneNumber(userRes?.data[0].phone);
+        setIsLoading(false)
+    }
+
+    useEffect((): void => {
+        GetUser()
+    }, [])
+
+    const Input = ({ type }: { type: string}) => {
+
+        const [value, setValue] = useState<object>({
+            name: "",
+            email: "",
+            phone: "",
+            oldPassword: "",
+            newPassword: "",
+            confirmPassword: ""
+        })
+
+        const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setValue({...value, [e.target.name]: e.target.value})
+        }
+
+        return (
+          <>
+              {type === "password" ? (
+                  <>
+                      <TextField
+                          fullWidth
+                          id="outlined-required"
+                          label={"Your " + type}
+                          type={type}
+                          name={"oldPassword"}
+                          onChange={handleInputChange}
+                      />
+                      <TextField
+                          fullWidth
+                          id="outlined-required"
+                          label={"New " + type}
+                          type={type}
+                          name={"newPassword"}
+                          sx={{margin: "15px 0"}}
+                          onChange={handleInputChange}
+                      />
+                      <TextField
+                          fullWidth
+                          id="outlined-required"
+                          label={"Confirm " + type}
+                          type={type}
+                          name={"confirmPassword"}
+                          onChange={handleInputChange}
+                      />
+                  </>
+              ) : (
+                  <TextField
+                      fullWidth
+                      id="outlined-required"
+                      label={"Enter your " + type}
+                      type={"text"}
+                      name={type}
+                      onChange={handleInputChange}
+                  />
+              )}
+              <Btn>
+                  <Button variant={"contained"} type={"submit"}>
+                      Save
+                  </Button>
+              </Btn>
+          </>
+        );
+    };
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [modalType, setModalType] = useState<string>("")
+
+    const handleOpen = (index: number) => {
+        let type;
+        switch (index) {
+            case 1:
+                type = "name";
+                break;
+            case 2:
+                type = "email";
+                break;
+            case 3:
+                type = "phone";
+                break;
+            case 4:
+                type = "password";
+                break;
+            default:
+                type = "";
+        }
+        setModalOpen(true);
+        setModalType(type);
+    };
+
     return (
-        <></>
-        // <div data-v-f8f75be6="" className="card profile" data-v-3f6273f4=""><h3 data-v-f8f75be6=""
-        //                                                                         className="slightly-transparent medium hug"> Profil </h3>
-        //     <div data-v-d72218ce="" className="list-container" data-v-f8f75be6="">
-        //         <div data-v-d72218ce="" className="list-topic"><em data-v-d72218ce=""
-        //                                                            className="transparent topic">Ismingiz</em><em
-        //             data-v-d72218ce="" data-test-id="text__name-value" className="value"> Dovudhon </em></div>
-        //         <div data-v-d72218ce="" className="list-content">
-        //             <button data-v-3e4203c2="" className="deframed button__container noselect"
-        //                     data-test-id="button__name-change" data-v-d72218ce="">
-        //                 <div data-v-3e4203c2="" className="ripple "
-        //                      style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-        //                 OʻZGARTIRISH</button>
-        //         </div>
-        //     </div>
-        //     <div data-v-d72218ce="" className="list-container" data-v-f8f75be6="">
-        //         <div data-v-d72218ce="" className="list-topic"><em data-v-d72218ce=""
-        //                                                            className="transparent topic">Email</em><em
-        //             data-v-d72218ce="" data-test-id="text__email-value" className="value"> do***@gmail.com </em></div>
-        //         <div data-v-d72218ce="" className="list-content">
-        //             <button data-v-3e4203c2="" className="deframed button__container noselect"
-        //                     data-test-id="button__email-change" data-v-d72218ce="">
-        //                 <div data-v-3e4203c2="" className="ripple "
-        //                      style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-        //                 OʻZGARTIRISH</button>
-        //         </div>
-        //     </div>
-        //     <div data-v-d72218ce="" className="list-container" data-v-f8f75be6="">
-        //         <div data-v-d72218ce="" className="list-topic"><em data-v-d72218ce=""
-        //                                                            className="transparent topic">Telefon</em><em
-        //             data-v-d72218ce="" data-test-id="text__phone-value" className="value"> +998******007 </em></div>
-        //         <div data-v-d72218ce="" className="list-content">
-        //             <button data-v-3e4203c2="" className="deframed button__container noselect"
-        //                     data-test-id="button__phone-change" data-v-d72218ce="">
-        //                 <div data-v-3e4203c2="" className="ripple "
-        //                      style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-        //                 OʻZGARTIRISH </button>
-        //         </div>
-        //     </div>
-        //     <div data-v-d72218ce="" className="list-container" data-v-f8f75be6="">
-        //         <div data-v-d72218ce="" className="list-topic"><em data-v-d72218ce=""
-        //                                                            className="transparent topic">Parol</em><em
-        //             data-v-d72218ce="" data-test-id="text__password-value" className="value"> ***************** </em>
-        //         </div>
-        //         <div data-v-d72218ce="" className="list-content">
-        //             <button data-v-3e4203c2="" className="deframed button__container noselect"
-        //                     data-test-id="button__password-change" data-v-d72218ce="">
-        //                 <div data-v-3e4203c2="" className="ripple "
-        //                      style="top: 0px; left: 0px; width: 0px; height: 0px;"></div>
-        //                 OʻZGARTIRISH</button>
-        //         </div>
-        //     </div>
-        // </div>
+        <ProfileStyles>
+            {isLoading ? (
+                <ContentLoader />
+            ) : (
+                <>
+                    <Typography textSize={"h3"} color={"text"} tag={"h3"} textWeight={"w_600"}>Account Info</Typography>
+                    <Form>
+                        <Box>
+                            <div>
+                                <span>Your Name</span>
+                                <p>{profileData.first_name}</p>
+                            </div>
+                            <span onClick={() => handleOpen(1)}>change</span>
+                        </Box>
+                        <Box>
+                            <div>
+                                <span>Email</span>
+                                <p>{profileData.email}</p>
+                            </div>
+                            <span onClick={() => handleOpen(2)}>change</span>
+                        </Box>
+                        <Box>
+                            <div>
+                                <span>Phone</span>
+                                <p>{phoneNumber}</p>
+                            </div>
+                            <span onClick={() => handleOpen(3)}>change</span>
+                        </Box>
+                        <Box>
+                            <div>
+                                <span>Password</span>
+                                <p>**********</p>
+                            </div>
+                            <span onClick={() => handleOpen(4)}>change</span>
+                        </Box>
+                    </Form>
+                </>
+            )}
+
+            <Modal
+                title={`Edit your ${modalType}`}
+                elements={<Input type={modalType}/>}
+                isModalOpen={modalOpen}
+                setModalOpen={setModalOpen}
+            />
+        </ProfileStyles>
     );
 }
 
