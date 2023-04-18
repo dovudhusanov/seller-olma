@@ -21,7 +21,7 @@ export const ModalStyles = styled.div<ModalProps>`
   }}
 `
 
-export const ModalInner = styled.form<ModalProps>`
+export const ModalInner = styled.div<ModalProps>`
   visibility: hidden;
   opacity: 0;
   transform: scale(0.1);
@@ -42,12 +42,13 @@ export const ModalInner = styled.form<ModalProps>`
           `
     }
   }}
-  & i {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+  & > button {
     cursor: pointer;
-    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
   }
 
   & h3 {
@@ -57,10 +58,6 @@ export const ModalInner = styled.form<ModalProps>`
     padding: 20px;
     border-bottom: 1px solid rgba(128, 128, 128, 0.42);
   }
-`
-
-export const Element = styled.div`
-  padding: 20px;
 `
 
 export const Btn = styled.div`
