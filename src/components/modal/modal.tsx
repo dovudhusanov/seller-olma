@@ -1,6 +1,6 @@
-import React from 'react';
-import {ModalStyles, ModalInner, Btn} from "./modal.styles";
-import {Button, IconButton} from "@mui/material";
+import React, {useCallback} from 'react';
+import {ModalStyles, ModalInner} from "./modal.styles";
+import {IconButton} from "@mui/material";
 
 interface ModalProps {
     elements: React.ReactNode
@@ -10,10 +10,15 @@ interface ModalProps {
 }
 
 function Modal({elements, isModalOpen, setModalOpen, title}: ModalProps) {
+
+    const handleClose = useCallback(() => {
+        setModalOpen(false)
+    }, [isModalOpen])
+
     return (
         <ModalStyles isModalOpen={isModalOpen} onClick={() => setModalOpen(false)}>
             <ModalInner isModalOpen={isModalOpen} onClick={(e) => e.stopPropagation()}>
-                <IconButton onClick={() => setModalOpen(false)}>
+                <IconButton onClick={handleClose}>
                     <i className="fa-solid fa-xmark"></i>
                 </IconButton>
                 <h3>{title}</h3>

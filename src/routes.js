@@ -1,17 +1,7 @@
-import React, {Suspense, lazy} from "react";
+import React from "react";
 import {Navigate, useRoutes} from "react-router-dom";
-import {Loader} from "./components";
 import BaseLayout from "./layout/base-layout";
-import {Profile, NotFound, Products, PersonalInformation, CreateProduct} from "./pages"
-const Loadable = (Component) => (props) => (
-    <Suspense fallback={<Loader/>}>
-        <Component {...props} />
-    </Suspense>
-);
-
-const Landing = Loadable(lazy(() => import("./pages/landing/landing")));
-const Signup = Loadable(lazy(() => import("./pages/signup/signup")));
-const Login = Loadable(lazy(() => import("./pages/login/login")));
+import {Profile, NotFound, Products, PersonalInformation, CreateProduct, Landing, Signup, Login} from "./pages"
 
 export const Routes = () => {
     const token = localStorage.getItem("access");

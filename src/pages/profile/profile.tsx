@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Form, ProfileStyles, Box} from "./profile.styled";
+import {ProfileStyles} from "./profile.styled";
 import {ContentLoader, Typography} from "../../components";
 import {ChangeTitle, ScrollTop} from "../../middleware";
 import {useNavigate} from "react-router-dom";
 import {GetUserApi} from "../../api/profile/get-user-api";
 import {GetSellerApi} from "../../api/profile/get-seller-api";
-import Modal from "../../components/modal/modal";
-import {Button, TextField} from "@mui/material";
-import {Btn} from "../../components/modal/modal.styles";
-import {SellerEditApi} from "../../api/profile/seller-edit-api";
-import ModalForm from "../../components/modal/components/modal-form";
 import ProfileForm from "./components/profile-form";
 import ModalMain from "../../components/modal";
 
@@ -56,6 +51,7 @@ function Profile() {
         const res = userRes?.data[0]?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
         setProfileData(res.data[0])
         setPhoneNumber(userRes?.data[0].phone);
+        localStorage.setItem("oldPhone", userRes?.data[0].phone)
         setIsLoading(false)
     }
 
@@ -71,7 +67,7 @@ function Profile() {
                 <>
                     <Typography textSize={"h3"} color={"text"} tag={"h3"} textWeight={"w_600"}>Account Info</Typography>
                     <ProfileForm profileData={profileData} phoneNumber={phoneNumber} handleOpen={handleOpen}/>
-                    <ModalMain modalOpen={modalOpen} setModalOpen={setModalOpen} modalType={modalType}/>
+                    <ModalMain modalOpen={modalOpen} setModalOpen={setModalOpen} type={modalType}/>
                 </>
             )}
         </ProfileStyles>

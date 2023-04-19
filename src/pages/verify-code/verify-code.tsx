@@ -6,17 +6,22 @@ import {ChangeTitle} from "../../middleware";
 import {signFailure, signSuccess} from "../../action/signup-action";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {Button} from "../../components";
 import {NewPassword} from "../index";
+import {Button} from "@mui/material";
+import {toast} from "react-toastify";
 
 interface VerifyCodeProps {
     phone: string | number | any
     type: string
     navigateTo: string
     newPhone?: number | string
+    isToast?: boolean
+    isProfile?: boolean
+    setModalOpen?: any
+    setNavigate?: any
 }
 
-export default function VerifyCode({phone, type, navigateTo, newPhone}: VerifyCodeProps) {
+export default function VerifyCode({phone, type, navigateTo, newPhone, isToast, isProfile, setModalOpen, setNavigate}: VerifyCodeProps) {
 
     ChangeTitle("Verify your phone number")
 
@@ -45,10 +50,14 @@ export default function VerifyCode({phone, type, navigateTo, newPhone}: VerifyCo
             setVerified(true)
             localStorage.removeItem("oldPhone")
             setIsLoading(false)
+            setModalOpen(false)
+            isToast && toast.success("Phone number successfully changed")
+            setNavigate(false)
         } catch (error) {
             setIsLoading(false)
             setVerified(false)
             dispatch(signFailure(error))
+            isToast && toast.success("")
         }
     }
 
@@ -77,7 +86,7 @@ export default function VerifyCode({phone, type, navigateTo, newPhone}: VerifyCo
 
     return (
         <>
-            <VerifyCodeStyles.Form onSubmit={handleSubmit}>
+            <VerifyCodeStyles.Form onSubmit={handleSubmit} profile={isProfile}>
                 <h1>Confirm the SMS code received on your phone number in <Count>{countdown}s</Count></h1>
                 <OtpInput
                     id="otp-input"
@@ -88,14 +97,14 @@ export default function VerifyCode({phone, type, navigateTo, newPhone}: VerifyCo
                     separator={<span>-</span>}
                     numInputs={6}
                 />
-                <Button textWeight={"w_600"} background={"dark"} hover={"dark"} type={"button"} className="resend">{countdown === 0 && (
+                <Button className="resend">{countdown === 0 && (
                         <p onClick={handleResendCode}>
                             <i className='fa-solid fa-repeat'></i> Resend Code
                         </p>
                     )}</Button>
-                <Button textWeight={"w_600"} background={"dark"} hover={"dark"} type={"submit"} loading={isLoading && true}>Send</Button>
+                <Button type={"submit"}>Send</Button>
             </VerifyCodeStyles.Form>
-            {verified === true && type === "password_reset" &&
+            {verified && type === "password_reset" &&
                 <NewPassword/>
             }
         </>

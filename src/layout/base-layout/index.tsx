@@ -17,6 +17,8 @@ import {LogoutApi} from "../../api";
 import {logout} from "../../action/auth-login-action";
 import {SettingsIcon} from "../../icons";
 import {Avatar, Box, IconButton} from "@mui/material";
+import {GetUserApi} from "../../api/profile/get-user-api";
+import {GetSellerApi} from "../../api/profile/get-seller-api";
 
 const {Header, Sider, Content} = Layout;
 
@@ -54,6 +56,23 @@ export default function BaseLayout() {
         };
     }, [])
 
+    const [avatarName, setAvatarName] = useState<any>([])
+
+    async function GetName(): Promise<void> {
+        const userRes = await GetUserApi(localStorage.getItem("userId"))
+        userRes?.data[0]?.seller && localStorage.setItem("sellerId", userRes.data[0].seller)
+        const res = userRes?.data[0]?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
+        setAvatarName(res?.data[0])
+    }
+
+    useEffect(() => {
+        GetName()
+    }, [window.location.pathname])
+
+    const initials = avatarName && avatarName.first_name && avatarName.last_name ? avatarName.first_name[0] + avatarName.last_name[0] : "U";
+
+    const [selectedKey, setSelectedKey] = useState<string>("")
+
     return (
         <BaseLayoutMainStyle isMobileBtn={isMobileBtn}>
             <Layout>
@@ -69,19 +88,27 @@ export default function BaseLayout() {
                     <Menu
                         theme="dark"
                         mode="inline"
+                        defaultSelectedKeys={["1"]}
                     >
-                        <Menu.Item className={"first-li"} key="1" icon={<UserOutlined/>}
-                                   onClick={() => setIsMobileBtn(false)}>
-                            <NavLink to="/seller/personal-information">Personal info</NavLink>
+                        <Menu.Item className={"first-li"} key={"1"} icon={<UserOutlined/>}
+                                   onClick={() => {
+                                       setIsMobileBtn(false)
+                                       setSelectedKey("1")
+                                   }}>
+                            <Link
+                                to={`/seller/personal-information`}>Personal Info</Link>
                         </Menu.Item>
                         {localStorage.getItem("sellerId") && (
-                            <Menu.Item className={"first-li"} key="2" icon={<DropboxOutlined/>}
-                                       onClick={() => setIsMobileBtn(false)}>
-                                <NavLink
-                                    to={`/seller/${localStorage.getItem("sellerId")}/products/all`}>Products</NavLink>
+                            <Menu.Item className={"first-li"} key={"2"} icon={<DropboxOutlined/>}
+                                       onClick={() => {
+                                           setIsMobileBtn(false)
+                                           setSelectedKey("12")
+                                       }}>
+                                <Link
+                                    to={`/seller/${localStorage.getItem("sellerId")}/products/all`}>Products</Link>
                             </Menu.Item>
                         )}
-                        <Menu.Item className={"logout-btn"} key="4" icon={<LogoutOutlined/>}
+                        <Menu.Item className={"logout-btn"} icon={<LogoutOutlined/>}
                                    onClick={() => handleLogout()} style={{marginTop: 'auto'}}>
                             <span>Log Out</span>
                         </Menu.Item>
@@ -122,7 +149,8 @@ export default function BaseLayout() {
                                         fontWeight: 600,
                                         cursor: "pointer"
                                     }}
-                                >DH</Avatar>
+                                >{localStorage.getItem("access") ? initials : "U"}
+                                </Avatar>
                             </Link>
                         </Box>
                     </Header>

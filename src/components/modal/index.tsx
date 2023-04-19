@@ -1,25 +1,27 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import ModalForm from "./components/modal-form";
 import Modal from "./modal";
+import {ModalFormInterface} from "../../types/modal-form.interface";
 
-interface ModalMainProps {
-    modalType: string
-    modalOpen: boolean
-    setModalOpen: any
-}
+function ModalMain({type, modalOpen, setModalOpen}: ModalFormInterface) {
 
-function ModalMain({modalType, modalOpen, setModalOpen}: ModalMainProps) {
-
-    window.addEventListener("keydown", (e: any) => {
-        if(e.key === "Escape") {
-            setModalOpen(false)
+    const handleKeyDown = useCallback((e: any) => {
+        if (e.key === 'Escape') {
+            setModalOpen(false);
         }
-    })
+    }, [modalOpen]);
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleKeyDown]);
 
     return (
         <Modal
-            title={`Edit your ${modalType}`}
-            elements={<ModalForm type={modalType}/>}
+            title={`Edit your ${type}`}
+            elements={<ModalForm type={type} setModalOpen={setModalOpen} modalOpen={modalOpen}/>}
             isModalOpen={modalOpen}
             setModalOpen={setModalOpen}
         />

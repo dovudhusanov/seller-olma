@@ -1,6 +1,6 @@
 import styled, {keyframes} from "styled-components";
 
-export const VerifyCodeStyles = {
+export const VerifyCodeStyles: any = {
     Form: styled.form`
       width: 100%;
       display: flex;
@@ -9,10 +9,25 @@ export const VerifyCodeStyles = {
 
       @media screen and (max-width: 820px) {
         margin-top: 80px;
+        ${((props: any): any => {
+            if(props.profile) {
+                return`
+                    margin-top: 0;
+                `
+            }
+        })}
       }
 
       & > div {
         margin-top: 50px;
+
+        ${((props: any): any => {
+          if(props.profile) {
+            return`
+                    margin-top: 20px;
+                `
+          }
+        })}
         
         & > div{
           & span{
@@ -26,11 +41,20 @@ export const VerifyCodeStyles = {
       }
 
       & h1 {
-        color: #ffffff;
         max-width: 700px;
         text-align: center;
         font-size: 28px;
         padding: 0 10px;
+        color: white;
+
+        ${((props: any): any => {
+          if(props.profile) {
+            return`
+                    font-size: 20px!important;
+                    color: black;
+                `
+          }
+        })};
 
         @media screen and (max-width: 600px) {
           font-size: 25px;
@@ -58,7 +82,7 @@ export const VerifyCodeStyles = {
         outline: none;
 
         &:focus {
-          box-shadow: 0 0 0px 3px var(--color-blue);
+          box-shadow: 0 0 0px 3px var(--primary-color);
           border: none;
         }
 
@@ -82,6 +106,14 @@ export const VerifyCodeStyles = {
           color: #ffffff;
           width: initial;
           cursor: initial;
+
+          ${((props: any): any => {
+            if(props.profile) {
+              return`
+                   color: black;
+                `
+            }
+          })};
                     
           & > p {
             cursor: pointer;
