@@ -1,4 +1,4 @@
-import {CategoriesDataInterface} from "./types/categories-data.types";
+import {CategoriesDataInterface, CharacteristicDataType} from "./types/categories-data.types";
 
 export const CategoriesData: CategoriesDataInterface[] = [
     {
@@ -62,4 +62,32 @@ export const CategoriesData: CategoriesDataInterface[] = [
         value: "food-products"
     },
 
+]
+
+export const CharacteristicData: CharacteristicDataType[] = [
+    {
+        id: 1,
+        name: "Color",
+        type: "color"
+    },
+    {
+        id: 2,
+        name: "Clothes size",
+        type: "clothes-size"
+    },
+    {
+        id: 3,
+        name: "Men's shoes size",
+        type: "men-shoe-size"
+    },
+    {
+        id: 4,
+        name: "Women's shoes size",
+        type: "women-shoe-size"
+    },
+    {
+        id: 5,
+        name: "Children's shoes size",
+        type: "children-shoe-size"
+    },
 ]

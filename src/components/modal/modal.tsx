@@ -10,7 +10,6 @@ interface ModalProps {
 }
 
 function Modal({elements, isModalOpen, setModalOpen, title}: ModalProps) {
-
     const handleClose = useCallback(() => {
         setModalOpen(false)
     }, [isModalOpen])

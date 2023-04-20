@@ -7,8 +7,9 @@ import {toast} from "react-toastify";
 import {ModalFormInterface} from "../../../types/modal-form.interface";
 import {ChangePhoneNumberApi} from "../../../api/profile/change-phone-number.api";
 import {VerifyCode} from "../../../pages";
+import {ChangePasswordApi} from "../../../api/profile/change-password.api";
 
-const ModalForm = ({type, setModalOpen, modalOpen}: ModalFormInterface) => {
+const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}: ModalFormInterface) => {
 
     const [value, setValue] = useState<object | any>({
         name: "",
@@ -33,37 +34,58 @@ const ModalForm = ({type, setModalOpen, modalOpen}: ModalFormInterface) => {
         userRes?.data?.seller && localStorage.setItem("sellerId", userRes?.data.seller)
 
         if (type === "password") {
-            console.log("password")
+            if (value.newPassword === "" && value.oldPassword === "" && value.confirmPassword === "") {
+                toast.warning(`please enter a ${type}`)
+            } else if(value.newPassword !== value.confirmPassword) {
+                toast.warning(`Must passwords same`)
+            } else {
+                try {
+                    await ChangePasswordApi({old_password: value.oldPassword, new_password: value.newPassword})
+                    toast.success('Password successfully changed!');
+                    setModalOpen(false)
+                } catch (error: any) {
+                    toast.error('old password is wrong');
+                    console.log(error.message)
+                }
+            }
         } else if (type === "email") {
-            try {
-                await SellerEditApi(localStorage.getItem("sellerId"), {
-                    email: value.email,
-                })
-                setModalOpen(false)
-                toast.success("Email is Changed")
-                setValue({
-                    name: "",
-                    email: "",
-                    phone: "",
-                    oldPassword: "",
-                    newPassword: "",
-                    confirmPassword: ""
-                })
-            } catch (e) {
-                toast.error("This email is already registered")
+            if (value[type] === "") {
+                toast.warning(`please enter a ${type}`)
+            } else {
+                try {
+                    await SellerEditApi(localStorage.getItem("sellerId"), {
+                        email: value.email,
+                    })
+                    setModalOpen(false)
+                    toast.success("Email is Changed")
+                    setValue({
+                        name: "",
+                        email: "",
+                        phone: "",
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmPassword: ""
+                    })
+                } catch (e) {
+                    toast.error("This email is already registered")
+                }
             }
         } else if (type === "phone") {
             setPhoneVerify(value.phone)
-            try {
-                await ChangePhoneNumberApi({phone: localStorage.getItem("oldPhone"), new_phone: value.phone})
-                setNavigate(true)
-            } catch (e) {
-                toast.error("Error")
-                setNavigate(false)
+            if (value[type] === "") {
+                toast.warning(`please enter a ${type}`)
+            } else {
+                try {
+                    await ChangePhoneNumberApi({phone: localStorage.getItem("oldPhone"), new_phone: value.phone})
+                    setNavigate(true)
+                } catch (e) {
+                    toast.error("Error")
+                    setNavigate(false)
+                }
             }
-        } else {
-            if (value.name === "") {
-                toast.warning("please enter a name")
+        } else if (type === "name") {
+            if (value[type] === "") {
+                toast.warning(`please enter a ${type}`)
             } else {
                 try {
                     await SellerEditApi(localStorage.getItem("sellerId"), {
@@ -104,10 +126,11 @@ const ModalForm = ({type, setModalOpen, modalOpen}: ModalFormInterface) => {
     return (
         <>
             {navigate ? (
-               <div style={{padding: "20px"}}>
-                   <VerifyCode newPhone={phoneVerify} setNavigate={setNavigate} setModalOpen={setModalOpen} phone={localStorage.getItem("oldPhone")}
-                               type={"change_phone"} navigateTo={"/seller/profile"} isToast isProfile/>
-               </div>
+                <div style={{padding: "20px"}}>
+                    <VerifyCode newPhone={phoneVerify} setNavigate={setNavigate} setModalOpen={setModalOpen}
+                                phone={localStorage.getItem("oldPhone")}
+                                type={"change_phone"} navigateTo={"/seller/profile"} isToast isProfile/>
+                </div>
             ) : (
                 <form style={{padding: "20px"}} onSubmit={handleSubmit}>
                     {type === "password" ? (
@@ -139,20 +162,28 @@ const ModalForm = ({type, setModalOpen, modalOpen}: ModalFormInterface) => {
                             />
                         </>
                     ) : (
-                        <TextField
-                            fullWidth
-                            id="outlined-required"
-                            label={"Enter your " + type}
-                            type={"text"}
-                            name={type}
-                            onChange={handleInputChange}
-                            value={value[type]}
-                        />
+                        <>
+                            {!isAddCharacteristic && (
+                                <TextField
+                                    fullWidth
+                                    id="outlined-required"
+                                    label={btnText ? `Enter your ${type} name` : `Enter your ${type}`}
+                                    type={"text"}
+                                    name={type}
+                                    onChange={handleInputChange}
+                                    value={value[type]}
+                                />
+                            )}
+                        </>
+                    )}
+
+                    {isAddCharacteristic && (
+                        <h4>Add New</h4>
                     )}
 
                     <Btn>
                         <Button variant={"contained"} type={"submit"}>
-                            Save
+                            {btnText ? btnText : "Save"}
                         </Button>
                     </Btn>
                 </form>

@@ -35,7 +35,6 @@ export const LeftForm = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 650px;
-  width: 650px;
   margin-right: 20px;
 
   @media screen and (max-width: 425px) {
