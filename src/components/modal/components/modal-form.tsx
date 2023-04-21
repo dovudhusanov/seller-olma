@@ -1,13 +1,11 @@
 import React, {useCallback, useEffect, useState} from "react"
-import {GetUserApi} from "../../../api/profile/get-user-api";
-import {SellerEditApi} from "../../../api/profile/seller-edit-api";
 import {Button, TextField} from "@mui/material";
 import {Btn} from "../modal.styles";
 import {toast} from "react-toastify";
-import {ModalFormInterface} from "../../../types/modal-form.interface";
-import {ChangePhoneNumberApi} from "../../../api/profile/change-phone-number.api";
+import {ModalFormInterface} from "../../../interfaces/modal-form.interface";
 import {VerifyCode} from "../../../pages";
-import {ChangePasswordApi} from "../../../api/profile/change-password.api";
+import {InputChangeEvent} from "../../../types/event.types";
+import {ChangePasswordApi, ChangePhoneNumberApi, GetUserApi, SellerEditApi} from "../../../api";
 
 const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}: ModalFormInterface) => {
 
@@ -23,7 +21,7 @@ const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}
     const [phoneVerify, setPhoneVerify] = useState("")
     const [navigate, setNavigate] = useState(false)
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: InputChangeEvent) => {
         setValue({...value, [e.target.name]: e.target.value})
     }
 

@@ -2,18 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {ProfileStyles} from "./profile.styled";
 import {ContentLoader, Typography} from "../../components";
 import {ChangeTitle, ScrollTop} from "../../middleware";
-import {useNavigate} from "react-router-dom";
-import {GetUserApi} from "../../api/profile/get-user-api";
-import {GetSellerApi} from "../../api/profile/get-seller-api";
 import ProfileForm from "./components/profile-form";
 import ModalMain from "../../components/modal";
+import {ProductTypes} from "../../interfaces/product.interface";
+import {GetSellerApi, GetUserApi} from "../../api";
 
 function Profile() {
 
     ScrollTop()
     ChangeTitle("Personal Information")
-
-    const navigate = useNavigate()
 
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [modalType, setModalType] = useState<string>("")
@@ -42,7 +39,7 @@ function Profile() {
     };
 
     const [phoneNumber, setPhoneNumber] = useState<number[]>([])
-    const [profileData, setProfileData] = useState<any>([])
+    const [profileData, setProfileData] = useState<ProductTypes[]>([])
 
     async function GetUser(): Promise<void> {
         setIsLoading(true)

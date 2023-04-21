@@ -9,6 +9,9 @@ import {useNavigate} from "react-router-dom";
 import {NewPassword} from "../index";
 import {Button} from "@mui/material";
 import {toast} from "react-toastify";
+// import {booleanState} from "../../types/state.types";
+
+type booleanState = React.Dispatch<React.SetStateAction<boolean>>;
 
 interface VerifyCodeProps {
     phone: string | number | any
@@ -17,8 +20,8 @@ interface VerifyCodeProps {
     newPhone?: number | string
     isToast?: boolean
     isProfile?: boolean
-    setModalOpen?: any
-    setNavigate?: any
+    setModalOpen?: booleanState | any
+    setNavigate?: booleanState | any
 }
 
 export default function VerifyCode({phone, type, navigateTo, newPhone, isToast, isProfile, setModalOpen, setNavigate}: VerifyCodeProps) {
@@ -27,10 +30,10 @@ export default function VerifyCode({phone, type, navigateTo, newPhone, isToast, 
 
     localStorage.setItem("phone_number", phone)
 
-    const [verified, setVerified] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const [verified, setVerified] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const [otp, setOtp] = useState('');
+    const [otp, setOtp] = useState<string>('');
 
     const dispatch = useDispatch()
 
@@ -61,7 +64,7 @@ export default function VerifyCode({phone, type, navigateTo, newPhone, isToast, 
         }
     }
 
-    const [countdown, setCountdown] = useState(60);
+    const [countdown, setCountdown] = useState<number>(60);
 
     useEffect(() => {
         let intervalId: null | any = null;

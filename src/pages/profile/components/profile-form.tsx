@@ -1,8 +1,10 @@
 import {Box, Form} from "../profile.styled";
+import {ProductTypes} from "../../../interfaces/product.interface";
+import {array} from "yup";
 
 interface ProfileFormInterface {
     handleOpen: (number: number) => void
-    profileData: object | any
+    profileData: ProductTypes[] | any
     phoneNumber: string | number[]
 }
 

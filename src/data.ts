@@ -1,4 +1,4 @@
-import {CategoriesDataInterface, CharacteristicDataType} from "./types/categories-data.types";
+import {CategoriesDataInterface, CharacteristicDataType} from "./interfaces/categories-data.interface";
 
 export const CategoriesData: CategoriesDataInterface[] = [
     {

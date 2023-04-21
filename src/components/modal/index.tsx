@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
 import ModalForm from "./components/modal-form";
 import Modal from "./modal";
-import {ModalFormInterface} from "../../types/modal-form.interface";
+import {ModalFormInterface} from "../../interfaces/modal-form.interface";
 
 function ModalMain({type, modalOpen, setModalOpen, btnText, isAddCharacteristic}: ModalFormInterface) {
 
-    const handleKeyDown = useCallback((e: any) => {
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape') {
             setModalOpen(false);
         }

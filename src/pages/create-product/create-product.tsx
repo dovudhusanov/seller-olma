@@ -6,10 +6,10 @@ import {ChangeTitle, ScrollTop} from "../../middleware";
 import {useNavigate, useParams} from "react-router-dom";
 import {Form, Formik} from "formik";
 import * as yup from "yup";
-import {ProductTypes} from "../../types/product.types";
-import {CreateProductApi} from "../../api/product/create-product-api";
+import {ProductTypes} from "../../interfaces/product.interface";
 import {ModalMain} from "../../components";
 import {LeftFormComponent, RightFormComponent} from "./components";
+import {CreateProductApi} from "../../api";
 
 const schema = yup.object().shape({
     name: yup.string().required('Product name is required'),

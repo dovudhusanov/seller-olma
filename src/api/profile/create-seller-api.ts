@@ -1,7 +1,7 @@
 import axiosInstance from "../axios";
-import {SellerTypes} from "../../types/seller.types";
+import {SellerInterface} from "../../interfaces/seller.interface";
 
-export const CreateSellerApi = (id: any, sellerInfo: SellerTypes) =>
+export const CreateSellerApi = (id: string | number | null, sellerInfo: SellerInterface) =>
     axiosInstance.post(`/seller/`, sellerInfo, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("access")}`

@@ -2,8 +2,9 @@ import React, {useRef, useState} from 'react';
 import {Box, Button, IconButton, Typography} from "@mui/material";
 import {SelectedImages, SelectedImagesButton, SelectImages} from "../create-product.styles";
 import {SelectImagesIcon} from "../../../icons/select-images.icon";
-import {UploadProductImagesApi} from "../../../api/product/upload-product-images-api";
 import {ImageUploadPropsInterface} from "../../../interfaces/images-upload.interface";
+import {UploadProductImagesApi} from "../../../api";
+import {InputChangeEvent} from "../../../types/event.types";
 
 function ImagesUpload({setImagePreviews, setImageIds, imagePreviews}: ImageUploadPropsInterface) {
 
@@ -11,33 +12,33 @@ function ImagesUpload({setImagePreviews, setImageIds, imagePreviews}: ImageUploa
 
     const [images, setImages] = useState<any>([]);
 
-    const handleFileUpload = (event: React.ChangeEvent<any>) => {
-        const files = Array.from(event.target.files);
-        const imagePreviews = files.map((file: any) => URL.createObjectURL(file));
-        setImages((prevState: any) => [...prevState, ...files]);
-        setImagePreviews((prevState: any) => [...prevState, ...imagePreviews]);
+    const handleFileUpload = (event: InputChangeEvent): void => {
+        const files: File[] = Array.from(event.target.files!);
+        const imagePreviews: string[] = files.map((file) => URL.createObjectURL(file));
+        setImages((prevState: File[]) => [...prevState, ...files]);
+        setImagePreviews((prevState: string[]) => [...prevState, ...imagePreviews]);
     };
 
-    const handleFileDrop = (event: any) => {
+    const handleFileDrop = (event: React.DragEvent<HTMLInputElement>) => {
         event.preventDefault();
         event.stopPropagation();
-        const files = Array.from(event.dataTransfer.files);
-        const imagePreviews = files.map((file: any) => URL.createObjectURL(file));
-        setImages((prevState: any) => [...prevState, ...files]);
-        setImagePreviews((prevState: any) => [...prevState, ...imagePreviews]);
+        const files: File[] = Array.from(event.dataTransfer.files!);
+        const imagePreviews: string[] = files.map((file) => URL.createObjectURL(file));
+        setImages((prevState: File[]) => [...prevState, ...files]);
+        setImagePreviews((prevState: string[]) => [...prevState, ...imagePreviews]);
     };
 
     const handleAllImages = async () => {
-        const formData: any = new FormData();
-        images.forEach((file: any, index: number) => {
+        const formData: FormData = new FormData();
+        images.forEach((file: File, index: number) => {
             formData.append(`file[${index}]`, file, file.name);
         });
 
         try {
             const res = await UploadProductImagesApi(formData);
             console.log(res.data);
-            const imageIdsString = res.data.results.map((result: any) => String(result))
-            setImageIds((prevState: any) => [...prevState, ...imageIdsString])
+            const imageIdsString: string[] = res.data.results.map((result: any) => String(result))
+            setImageIds((prevState: string[]) => [...prevState, ...imageIdsString])
 
         } catch (error) {
             console.error(error);

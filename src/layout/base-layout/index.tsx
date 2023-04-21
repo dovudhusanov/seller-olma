@@ -25,7 +25,7 @@ const {Header, Sider, Content} = Layout;
 export default function BaseLayout() {
 
     const [collapsed, setCollapsed] = useState<boolean>(false);
-    const [isMobileBtn, setIsMobileBtn] = useState<any>(false)
+    const [isMobileBtn, setIsMobileBtn] = useState<boolean>(false)
     const {
         token: {colorBgContainer},
     } = theme.useToken();

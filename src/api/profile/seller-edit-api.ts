@@ -1,7 +1,7 @@
 import axiosInstance from "../axios";
-import {SellerTypes} from "../../types/seller.types";
+import {SellerInterface} from "../../interfaces/seller.interface";
 
-export const SellerEditApi = (id: any, sellerInfo: SellerTypes | any) =>
+export const SellerEditApi = (id: string | any, sellerInfo: SellerInterface | any) =>
     axiosInstance.patch(`/seller/${id}/`, sellerInfo, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("access")}`

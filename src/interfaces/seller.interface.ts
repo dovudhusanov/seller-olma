@@ -1,4 +1,4 @@
-export interface SellerTypes {
+export interface SellerInterface {
     first_name: string
     last_name: string
     surname: string

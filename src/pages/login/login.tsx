@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {Button} from "../../components";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import "../signup/signup.css"
 // @ts-ignore
 import authImage from "../../assets/sign_.jpg"
 import {useDispatch} from "react-redux";
 import {LoginUser} from "../../action/auth-login-action";
-import {Alert} from "@mui/material";
 import {ChangeTitle, ScrollTop} from "../../middleware";
+import {Dispatch} from "redux";
+import {FormEventType} from "../../types/event.types";
 
 function Login() {
 
@@ -25,11 +26,9 @@ function Login() {
         setForm({...form, [e.target.name]: e.target.value});
     }
 
-    const dispatch: any = useDispatch()
+    const dispatch: Dispatch<any> = useDispatch()
 
-    const navigate = useNavigate()
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEventType) => {
         e.preventDefault();
         try {
             setIsLoading(true)

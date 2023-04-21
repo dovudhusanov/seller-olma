@@ -10,4 +10,4 @@ export type numberState = React.Dispatch<React.SetStateAction<number>>
 
 export type numberArrayState = React.Dispatch<React.SetStateAction<string[]>>
 
-export type numberAny = React.Dispatch<React.SetStateAction<any>>
+export type anyState = React.Dispatch<React.SetStateAction<any>>

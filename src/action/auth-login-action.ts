@@ -1,7 +1,5 @@
 import {AuthLoginTypes} from "../constants/auth-login-type";
-import {AccessTokenRefreshedApi, LoginApi} from "../api";
-import {GetUserApi} from "../api/profile/get-user-api";
-import {useNavigate} from "react-router-dom";
+import {AccessTokenRefreshedApi, GetUserApi, LoginApi} from "../api";
 
 export const loginStart = () => ({
     type: AuthLoginTypes.LOGIN_START,
@@ -20,7 +18,7 @@ export const logout = () => ({
     type: AuthLoginTypes.LOGOUT,
 });
 
-const refreshTokenSuccess = (accessToken: string) => ({
+const refreshTokenSuccess = (accessToken: any) => ({
     type: AuthLoginTypes.ACCESS_TOKEN_REFRESHED,
     payload: { access: accessToken },
 });
@@ -29,7 +27,7 @@ const tokenExpired = () => ({
     type: AuthLoginTypes.ACCESS_TOKEN_EXPIRED,
 });
 
-export const LoginUser = (phoneNumber: any, password: any) => {
+export const LoginUser = (phoneNumber: string, password: string) => {
     return async (dispatch: any) => {
         dispatch(loginStart());
         try {

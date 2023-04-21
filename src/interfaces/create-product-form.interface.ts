@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductTypes} from "../types/product.types";
+import {ProductTypes} from "./product.interface";
 
 export interface CreateProductFormInterface {
     errors: ProductTypes | any

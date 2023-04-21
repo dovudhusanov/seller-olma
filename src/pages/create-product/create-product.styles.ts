@@ -59,9 +59,21 @@ export const LeftForm = styled.div`
 `
 
 export const Right = styled.div`
+  max-width: 400px;
+  width: 400px;
+  
+  & > button{
+    width: 100%;
+    margin-top: 20px!important;
+  }
+  
   @media screen and (max-width: 1120px) {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    max-width: 650px;
+    width: 650px;
+    align-items: center;
   }
 
   @media screen and (max-width: 940px) {
@@ -73,7 +85,7 @@ export const Right = styled.div`
 export const RightForm = styled.div`
   background-color: rgb(255, 255, 255);
   color: rgb(33, 43, 54);
-  transition:  box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   overflow: hidden;
   position: relative;
   box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
@@ -82,13 +94,12 @@ export const RightForm = styled.div`
   padding: 24px;
   display: flex;
   flex-direction: column;
-  max-width: 400px;
-  width: 400px;
+  gap: 20px;
 
   @media screen and (max-width: 1120px) {
     margin-top: 30px;
-    max-width: 650px;
-    width: 650px;
+    max-width: 100%;
+    width: 100%;
   }
 
   @media screen and (max-width: 940px) {
@@ -100,10 +111,10 @@ export const RightForm = styled.div`
     padding: 10px;
     box-shadow: none;
   }
-  & > div{
-    margin-bottom: 25px;
-    & > div{
-      border-radius: 8px!important;
+
+  & > div {
+    & > div {
+      border-radius: 8px !important;
     }
   }
 `

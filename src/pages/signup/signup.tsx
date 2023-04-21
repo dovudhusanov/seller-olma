@@ -9,6 +9,7 @@ import {VerifyCode} from "../index";
 import {SignupApi} from "../../api";
 import {signFailure, signStart} from "../../action/signup-action";
 import {ChangeTitle, ScrollTop} from "../../middleware";
+import {FormEventType, InputChangeEvent} from "../../types/event.types";
 
 function Signup() {
 
@@ -21,17 +22,17 @@ function Signup() {
         phoneNumber: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<any>) => {
+    const handleChange = (e: InputChangeEvent) => {
         setForm({...form, [e.target.name]: e.target.value});
     }
 
-    const [isPhoneNumberSubmitted, setIsPhoneNumberSubmitted] = useState(false);
-    const [phoneVerify, setPhoneVerify] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
+    const [isPhoneNumberSubmitted, setIsPhoneNumberSubmitted] = useState<boolean>(false);
+    const [phoneVerify, setPhoneVerify] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const dispatch = useDispatch()
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEventType) => {
         e.preventDefault();
         setPhoneVerify(form.phoneNumber)
         dispatch(signStart())
@@ -44,7 +45,6 @@ function Signup() {
             console.log(error)
             dispatch(signFailure(error.message))
             throw error
-            setIsPhoneNumberSubmitted(false)
         }
     }
 

@@ -4,14 +4,11 @@ import * as yup from 'yup';
 import {PersonalInformationStyles, Warning} from "./personal-information.styles";
 import {WarningIcon} from "../../icons";
 import {Button, Stack, TextField, Typography} from "@mui/material";
-import {CreateSellerApi} from "../../api/profile/create-seller-api";
-import {GetUserApi} from "../../api/profile/get-user-api";
-import {GetSellerApi} from "../../api/profile/get-seller-api";
-import {SellerEditApi} from "../../api/profile/seller-edit-api";
-import {SellerTypes} from "../../types/seller.types";
+import {SellerInterface} from "../../interfaces/seller.interface";
 import {ChangeTitle, ScrollTop} from "../../middleware";
 import {useNavigate} from "react-router-dom";
 import {ContentLoader} from "../../components";
+import {CreateSellerApi, GetSellerApi, GetUserApi, SellerEditApi} from "../../api";
 
 const schema = yup.object().shape({
     first_name: yup.string().required('First name is required'),
@@ -64,7 +61,7 @@ function PersonalInformation() {
         GetUser()
     }, [])
 
-    const [value, setValue] = useState<SellerTypes>({
+    const [value, setValue] = useState<SellerInterface>({
         first_name: '',
         last_name: '',
         surname: '',
@@ -78,7 +75,7 @@ function PersonalInformation() {
         shop_picture: [0]
     })
 
-    const handleSubmit = async (values: SellerTypes): Promise<void> => {
+    const handleSubmit = async (values: SellerInterface): Promise<void> => {
         const {first_name, last_name, shop_name, bank_account, bank_mfo, bio, inn, address, surname, email} = values
         if (userData.seller) {
             const userRes = await GetUserApi(localStorage.getItem("userId"))
