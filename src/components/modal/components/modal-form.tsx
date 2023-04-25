@@ -16,10 +16,11 @@ const ModalForm = ({
    btnText,
    isAddCharacteristic,
    setSelectedOptions,
-   selectedOptions
+   selectedOptions,
+   setIsEdited
 }: ModalFormInterface) => {
 
-    ScrollTop()
+    ScrollTop();
 
     const [value, setValue] = useState<object | any>({
         name: "",
@@ -85,6 +86,7 @@ const ModalForm = ({
                         newPassword: "",
                         confirmPassword: ""
                     })
+                    setIsEdited(true)
                 } catch (e) {
                     toast.error("This email is already registered")
                 }
@@ -97,6 +99,7 @@ const ModalForm = ({
                 try {
                     await ChangePhoneNumberApi({phone: localStorage.getItem("oldPhone"), new_phone: value.phone})
                     setNavigate(true)
+                    setIsEdited(true)
                 } catch (e) {
                     toast.error("Error")
                     setNavigate(false)
@@ -110,6 +113,7 @@ const ModalForm = ({
                     await SellerEditApi(localStorage.getItem("sellerId"), {
                         first_name: value.name,
                     })
+                    setIsEdited(true)
                     setModalOpen(false)
                     setValue({
                         name: "",

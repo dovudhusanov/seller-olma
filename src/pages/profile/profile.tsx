@@ -40,6 +40,7 @@ function Profile() {
 
     const [phoneNumber, setPhoneNumber] = useState<number[]>([])
     const [profileData, setProfileData] = useState<ProductTypes[]>([])
+    const [isEdited, setIsEdited] = useState<boolean>(false)
 
     async function GetUser(): Promise<void> {
         setIsLoading(true)
@@ -54,7 +55,7 @@ function Profile() {
 
     useEffect((): void => {
         GetUser()
-    }, [])
+    }, [isEdited])
 
     return (
         <ProfileStyles>
@@ -64,7 +65,7 @@ function Profile() {
                 <>
                     <Typography textSize={"h3"} color={"text"} tag={"h3"} textWeight={"w_600"}>Account Info</Typography>
                     <ProfileForm profileData={profileData} phoneNumber={phoneNumber} handleOpen={handleOpen}/>
-                    <ModalMain modalOpen={modalOpen} setModalOpen={setModalOpen} type={modalType}/>
+                    <ModalMain modalOpen={modalOpen} setIsEdited={setIsEdited} setModalOpen={setModalOpen} type={modalType}/>
                 </>
             )}
         </ProfileStyles>

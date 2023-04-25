@@ -9,6 +9,7 @@ import {ChangeTitle, ScrollTop} from "../../middleware";
 import {useNavigate} from "react-router-dom";
 import {ContentLoader} from "../../components";
 import {CreateSellerApi, GetSellerApi, GetUserApi, SellerEditApi} from "../../api";
+import {toast} from "react-toastify";
 
 const schema = yup.object().shape({
     first_name: yup.string().required('First name is required'),
@@ -92,6 +93,10 @@ function PersonalInformation() {
                 surname,
                 email,
                 shop_picture: [2]
+            }).then(_ => {
+                toast.success("Infos successfully changed!")
+            }).catch(_ => {
+                toast.error("Error")
             })
         } else {
             try {
@@ -176,19 +181,21 @@ function PersonalInformation() {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                    <Field
-                                        type={"email"}
-                                        error={errors.email && touched.email}
-                                        name="email"
-                                        id="outlined-required"
-                                        label="Email"
-                                        as={TextField}
-                                        required
-                                        value={values.email}
-                                        onChange={handleChange}
-                                        helperText={errors.email}
-                                        onBlur={handleBlur}
-                                    />
+                                    {!localStorage.getItem("sellerId") && (
+                                        <Field
+                                            type={"email"}
+                                            error={errors.email && touched.email}
+                                            name="email"
+                                            id="outlined-required"
+                                            label="Email"
+                                            as={TextField}
+                                            required
+                                            value={values.email}
+                                            onChange={handleChange}
+                                            helperText={errors.email}
+                                            onBlur={handleBlur}
+                                        />
+                                    )}
                                 </Stack>
                                 <Typography fontSize={"20px"} paddingTop={"20px"}>Registration Form</Typography>
                                 <Stack direction={"row"} gap={2} flexWrap={"wrap"} className={"form-personal-info"}>

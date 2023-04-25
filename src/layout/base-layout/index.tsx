@@ -127,8 +127,8 @@ export default function BaseLayout() {
                                 <MenuUnfoldOutlined/>
                             </button>
                             <div className="logo-layout">
-                                <img src={logo} width={30} alt="logo" className="logo"/>
-                                <h2>Olma Market</h2>
+                                <Link to={"/seller/personal-information"}><img src={logo} width={30} alt="logo" className="logo"/>
+                                    <h2>Olma Market</h2></Link>
                             </div>
                         </div>
                         <Box sx={{

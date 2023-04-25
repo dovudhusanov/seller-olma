@@ -8,4 +8,5 @@ export interface ModalFormInterface {
     isAddCharacteristic?: boolean
     setSelectedOptions?: any
     selectedOptions?: any
+    setIsEdited?: any
 }

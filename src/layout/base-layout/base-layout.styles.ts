@@ -8,9 +8,12 @@ export const BaseLayoutMainStyle = styled.div<BaseLayoutMainStyle>`
   }
 
   .logo-layout {
-    display: flex;
-    align-items: center;
     padding: 0 0 0 15px;
+    
+    & a{
+      display: flex;
+      align-items: center;
+    }
   }
 
   .logo-layout img {
