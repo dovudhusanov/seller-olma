@@ -1,9 +1,11 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ModalForm from "./components/modal-form";
 import Modal from "./modal";
 import {ModalFormInterface} from "../../interfaces/modal-form.interface";
 
 function ModalMain({type, modalOpen, setModalOpen, btnText, isAddCharacteristic}: ModalFormInterface) {
+
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === 'Escape') {
@@ -26,7 +28,10 @@ function ModalMain({type, modalOpen, setModalOpen, btnText, isAddCharacteristic}
                 setModalOpen={setModalOpen}
                 modalOpen={modalOpen}
                 btnText={btnText}
-                isAddCharacteristic={isAddCharacteristic}/>}
+                isAddCharacteristic={isAddCharacteristic}
+                setSelectedOptions={setSelectedOptions}
+                selectedOptions={selectedOptions}
+            />}
             isModalOpen={modalOpen}
             setModalOpen={setModalOpen}
         />

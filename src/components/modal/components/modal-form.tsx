@@ -1,13 +1,25 @@
 import React, {useCallback, useEffect, useState} from "react"
-import {Button, TextField} from "@mui/material";
+import {Button, Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {Btn} from "../modal.styles";
 import {toast} from "react-toastify";
 import {ModalFormInterface} from "../../../interfaces/modal-form.interface";
 import {VerifyCode} from "../../../pages";
 import {InputChangeEvent} from "../../../types/event.types";
 import {ChangePasswordApi, ChangePhoneNumberApi, GetUserApi, SellerEditApi} from "../../../api";
+import {CharacteristicList} from "./modal-form.styles";
+import {ScrollTop} from "../../../middleware";
 
-const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}: ModalFormInterface) => {
+const ModalForm = ({
+   type,
+   setModalOpen,
+   modalOpen,
+   btnText,
+   isAddCharacteristic,
+   setSelectedOptions,
+   selectedOptions
+}: ModalFormInterface) => {
+
+    ScrollTop()
 
     const [value, setValue] = useState<object | any>({
         name: "",
@@ -25,6 +37,15 @@ const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}
         setValue({...value, [e.target.name]: e.target.value})
     }
 
+    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const option: any = event.target.value;
+        if (event.target.checked) {
+            setSelectedOptions([...selectedOptions, option]);
+        } else {
+            setSelectedOptions(selectedOptions.filter((selectedOption: string[]) => selectedOption !== option));
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
@@ -34,7 +55,7 @@ const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}
         if (type === "password") {
             if (value.newPassword === "" && value.oldPassword === "" && value.confirmPassword === "") {
                 toast.warning(`please enter a ${type}`)
-            } else if(value.newPassword !== value.confirmPassword) {
+            } else if (value.newPassword !== value.confirmPassword) {
                 toast.warning(`Must passwords same`)
             } else {
                 try {
@@ -115,11 +136,38 @@ const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}
             newPassword: "",
             confirmPassword: "",
         });
+        setSelectedOptions([])
     }, [modalOpen]);
 
     useEffect(() => {
         resetForm();
     }, [resetForm, modalOpen]);
+
+    // Determine which options to show based on the characteristic type
+    let optionsToDisplay: any = [];
+    switch (type) {
+        case "color":
+            optionsToDisplay = ["Red", "Blue", "Green", "White", "Yellow", "Black", "Cyan", "Orange", "Grey"];
+            break;
+        case "clothes-size":
+            optionsToDisplay = ["XXXS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL", "4XL", "5XL"];
+            break;
+        case "men-shoe-size":
+            optionsToDisplay = ["37", "38", "39", "40", "42", "43", "44", "45", "46", "47"];
+            break;
+        case "women-shoe-size":
+            optionsToDisplay = ["35", "36", "37", "38", "39", "40", "42", "43", "44"];
+            break;
+        case "children-shoe-size":
+            optionsToDisplay = ["15", "16", "17", "18", "20", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34"];
+            break;
+        default:
+            optionsToDisplay = [];
+            break;
+    }
+
+
+    console.log(selectedOptions)
 
     return (
         <>
@@ -175,8 +223,22 @@ const ModalForm = ({type, setModalOpen, modalOpen, btnText, isAddCharacteristic}
                         </>
                     )}
 
-                    {isAddCharacteristic && (
-                        <h4>Add New</h4>
+                    {optionsToDisplay.length > 0 && (
+                        <CharacteristicList>
+                            {optionsToDisplay.map((option: any, index: any) => (
+                                <li>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                onChange={handleOptionChange}
+                                                checked={selectedOptions.includes(option)}
+                                                value={option}
+                                            />}
+                                        label={option}
+                                    />
+                                </li>
+                            ))}
+                        </CharacteristicList>
                     )}
 
                     <Btn>

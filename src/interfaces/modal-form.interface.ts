@@ -1,4 +1,4 @@
-import {booleanState} from "../types/state.types";
+import {booleanState, stringArrayState} from "../types/state.types";
 
 export interface ModalFormInterface {
     type: string
@@ -6,4 +6,6 @@ export interface ModalFormInterface {
     setModalOpen: booleanState
     btnText?: string
     isAddCharacteristic?: boolean
+    setSelectedOptions?: any
+    selectedOptions?: any
 }
