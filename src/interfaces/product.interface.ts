@@ -6,5 +6,5 @@ export interface ProductTypes {
     price: string
     discount: number
     images: string[]
-    attributes: object[]
+    attributes: any
 }

@@ -3,13 +3,14 @@ import {Formik, Form, Field} from 'formik';
 import * as yup from 'yup';
 import {PersonalInformationStyles, Warning} from "./personal-information.styles";
 import {WarningIcon} from "../../icons";
-import {Button, Stack, TextField, Typography} from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import {SellerInterface} from "../../interfaces/seller.interface";
 import {ChangeTitle, ScrollTop} from "../../middleware";
 import {useNavigate} from "react-router-dom";
 import {ContentLoader} from "../../components";
 import {CreateSellerApi, GetSellerApi, GetUserApi, SellerEditApi} from "../../api";
 import {toast} from "react-toastify";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const schema = yup.object().shape({
     first_name: yup.string().required('First name is required'),
@@ -33,14 +34,15 @@ function PersonalInformation() {
 
     const [userData, setUserData] = useState<any>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
     async function GetUser(): Promise<void> {
         setIsLoading(true)
         const userRes = await GetUserApi(localStorage.getItem("userId"))
         console.log(userRes.data)
-        userRes?.data[0]?.seller && localStorage.setItem("sellerId", userRes.data[0].seller)
-        const res = userRes?.data[0]?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
-        setUserData(userRes?.data[0]);
+        userRes?.data?.seller && localStorage.setItem("sellerId", userRes.data.seller)
+        const res = userRes?.data?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
+        setUserData(userRes?.data);
 
         setValue({
             first_name: res?.data[0]?.first_name,
@@ -78,7 +80,8 @@ function PersonalInformation() {
 
     const handleSubmit = async (values: SellerInterface): Promise<void> => {
         const {first_name, last_name, shop_name, bank_account, bank_mfo, bio, inn, address, surname, email} = values
-        if (userData.seller) {
+        if (userData.is_seller) {
+            setLoading(true)
             const userRes = await GetUserApi(localStorage.getItem("userId"))
             userRes?.data?.seller && localStorage.setItem("sellerId", userRes?.data.seller)
             await SellerEditApi(localStorage.getItem("sellerId"), {
@@ -98,6 +101,7 @@ function PersonalInformation() {
             }).catch(_ => {
                 toast.error("Error")
             })
+            setLoading(false)
         } else {
             try {
                 const res = await CreateSellerApi(localStorage.getItem("userId"), {
@@ -116,17 +120,17 @@ function PersonalInformation() {
                 res?.data?.id && localStorage.setItem("sellerId", res?.data.id);
                 window.location.reload()
                 navigate(`seller/${localStorage.getItem("sellerId")}/products/all`)
+                console.log(res)
             } catch (e) {
                 console.log(e)
             }
         }
     }
 
-
     return (
         <PersonalInformationStyles>
-            {isLoading ? (
-                <ContentLoader />
+            {(userData.is_seller ? isLoading : !isLoading) ? (
+                <ContentLoader/>
             ) : (
                 <>
                     <Warning>
@@ -274,7 +278,10 @@ function PersonalInformation() {
                                         onBlur={handleBlur}
                                     />
                                 </Stack>
-                                <Button sx={{marginTop: "10px"}} variant={"contained"} type={"submit"}>Save</Button>
+                                <LoadingButton sx={{marginTop: "10px"}} loading={loading} variant="contained"
+                                               type={"submit"}>
+                                    Save
+                                </LoadingButton>
                             </Form>
                         )}
                     </Formik>

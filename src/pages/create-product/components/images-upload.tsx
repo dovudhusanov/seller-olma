@@ -6,7 +6,7 @@ import {ImageUploadPropsInterface} from "../../../interfaces/images-upload.inter
 import {UploadProductImagesApi} from "../../../api";
 import {InputChangeEvent} from "../../../types/event.types";
 
-function ImagesUpload({setImagePreviews, setImageIds, imagePreviews}: ImageUploadPropsInterface) {
+function ImagesUpload({setImagePreviews, setImageIds, imagePreviews, value, setValue}: ImageUploadPropsInterface) {
 
     const selectImgRef: any = useRef()
 
@@ -39,6 +39,7 @@ function ImagesUpload({setImagePreviews, setImageIds, imagePreviews}: ImageUploa
             console.log(res.data);
             const imageIdsString: string[] = res.data.results.map((result: any) => String(result))
             setImageIds((prevState: string[]) => [...prevState, ...imageIdsString])
+            setValue({...value, images: imageIdsString})
 
         } catch (error) {
             console.error(error);

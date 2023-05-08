@@ -41,7 +41,7 @@ function CreateProduct() {
     const [modalType, setModalType] = useState<string>("")
     const [isAddCharacteristic, setIsAddCharacteristic] = useState<boolean>(false)
 
-    const [value, setValue] = useState<ProductTypes>({
+    const [value, setValue] = useState<any>({
         name: '',
         category: "",
         seller: localStorage.getItem("sellerId"),
@@ -52,8 +52,9 @@ function CreateProduct() {
         attributes: []
     })
 
+    console.log(value)
     const handleSubmit = async (values: ProductTypes) => {
-        const {name, price, category, description, seller, discount, attributes} = values
+        const {name, price, category, description, seller, discount, attributes, images} = values
         try {
             const res = await CreateProductApi({
                 name,
@@ -63,12 +64,17 @@ function CreateProduct() {
                 seller,
                 discount,
                 attributes,
-                images: ["60", "61"]
+                images,
             })
             console.log(res)
         } catch (e) {
             console.log(e)
         }
+    }
+
+    const click = () => {
+        setValue({...value, attributes: []})
+        console.log(value)
     }
 
     return (
@@ -99,6 +105,8 @@ function CreateProduct() {
                                 setImagePreviews={setImagePreviews}
                                 setImageIds={setImageIds}
                                 imagePreviews={imagePreviews}
+                                setValue={setValue}
+                                value={value}
                             />
                             <RightFormComponent
                                 setModalOpen={setModalOpen}
@@ -109,10 +117,13 @@ function CreateProduct() {
                                 values={values}
                                 setModalType={setModalType}
                                 setIsAddCharacteristic={setIsAddCharacteristic}
+                                setValue={setValue}
+                                value={value}
                             />
                         </Form>
                     )}
                 </Formik>
+                <button onClick={click}>submit</button>
             </CreateProductStyles>
             <ModalMain
                 type={modalType}
@@ -120,6 +131,8 @@ function CreateProduct() {
                 modalOpen={modalOpen}
                 setModalOpen={setModalOpen}
                 isAddCharacteristic={isAddCharacteristic}
+                setValue={setValue}
+                value={value}
             />
         </>
     );

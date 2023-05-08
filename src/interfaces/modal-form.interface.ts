@@ -1,4 +1,5 @@
 import {booleanState, stringArrayState} from "../types/state.types";
+import {ProductTypes} from "./product.interface";
 
 export interface ModalFormInterface {
     type: string
@@ -9,4 +10,8 @@ export interface ModalFormInterface {
     setSelectedOptions?: any
     selectedOptions?: any
     setIsEdited?: any
+    setValue?: any
+    setValuePr?: any
+    value?: ProductTypes
+    valuePr?: ProductTypes
 }

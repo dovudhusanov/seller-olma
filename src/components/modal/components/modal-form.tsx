@@ -10,15 +10,15 @@ import {CharacteristicList} from "./modal-form.styles";
 import {ScrollTop} from "../../../middleware";
 
 const ModalForm = ({
-   type,
-   setModalOpen,
-   modalOpen,
-   btnText,
-   isAddCharacteristic,
-   setSelectedOptions,
-   selectedOptions,
-   setIsEdited
-}: ModalFormInterface) => {
+                       type,
+                       setModalOpen,
+                       modalOpen,
+                       btnText,
+                       isAddCharacteristic,
+                       setSelectedOptions,
+                       selectedOptions,
+                       setIsEdited, setValuePr, valuePr
+                   }: ModalFormInterface) => {
 
     ScrollTop();
 
@@ -128,7 +128,30 @@ const ModalForm = ({
                     toast.error("Error")
                 }
             }
+        } else { // @ts-ignore
+            if (type && isAddCharacteristic) {
+                try {
+                    const attributeValue = type.replace(/-/g, " "); // Remove hyphens from the type value
+                    const newAttribute = {
+                        value: attributeValue,
+                        attribute: selectedOptions
+                    };
+
+                    // @ts-ignore
+                    const newAttributes = [...valuePr.attributes, newAttribute];
+
+                    setValuePr({
+                        ...valuePr,
+                        attributes: newAttributes
+                    });
+
+                    setModalOpen(false);
+                } catch (e) {
+                    console.log(e);
+                }
+            }
         }
+
     }
 
     const resetForm = useCallback(() => {
@@ -140,7 +163,7 @@ const ModalForm = ({
             newPassword: "",
             confirmPassword: "",
         });
-        setSelectedOptions([])
+
     }, [modalOpen]);
 
     useEffect(() => {
@@ -169,9 +192,7 @@ const ModalForm = ({
             optionsToDisplay = [];
             break;
     }
-
-
-    console.log(selectedOptions)
+    console.log(valuePr)
 
     return (
         <>

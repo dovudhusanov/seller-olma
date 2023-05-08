@@ -6,5 +6,7 @@ export interface CreateProductFormInterface {
     touched: ProductTypes | any;
     handleBlur: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    values: ProductTypes
+    values: ProductTypes,
+    setValue: any
+    value: ProductTypes
 }

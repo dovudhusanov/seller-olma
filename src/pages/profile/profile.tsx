@@ -45,11 +45,11 @@ function Profile() {
     async function GetUser(): Promise<void> {
         setIsLoading(true)
         const userRes = await GetUserApi(localStorage.getItem("userId"))
-        userRes?.data[0]?.seller && localStorage.setItem("sellerId", userRes.data[0].seller)
-        const res = userRes?.data[0]?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
+        userRes?.data?.seller && localStorage.setItem("sellerId", userRes.data.seller)
+        const res = userRes?.data?.seller && await GetSellerApi(localStorage.getItem("sellerId"))
         setProfileData(res.data[0])
-        setPhoneNumber(userRes?.data[0].phone);
-        localStorage.setItem("oldPhone", userRes?.data[0].phone)
+        setPhoneNumber(userRes?.data.phone);
+        localStorage.setItem("oldPhone", userRes?.data.phone)
         setIsLoading(false)
     }
 

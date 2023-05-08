@@ -14,7 +14,9 @@ function LeftFormComponent({
    values,
    setImagePreviews,
    setImageIds,
-   imagePreviews
+   imagePreviews,
+    setValue,
+    value
 }: ImageUploadPropsInterface & CreateProductFormInterface) {
 
     return (
@@ -62,6 +64,8 @@ function LeftFormComponent({
                 setImagePreviews={setImagePreviews}
                 setImageIds={setImageIds}
                 imagePreviews={imagePreviews}
+                setValue={setValue}
+                value={value}
             />
         </LeftForm>
     );
